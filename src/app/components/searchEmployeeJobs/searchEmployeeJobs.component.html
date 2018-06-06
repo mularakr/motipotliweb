@@ -1,0 +1,341 @@
+<div class="booked-jobs-wrap bg_grey pos-rel open_jobs myjobPage searchJobs">
+	<div class="booked-jobs-wrap container_1560">
+		<div class="row">
+			<div class="col-md-12 col-lg-12 col-xl-9 pad-lf-10">
+				<div class="booked_job_tab serach_job_filters">
+					<form #Searchform="ngForm" [formGroup]="searchJobForm" (ngSubmit)="searchJobForm.valid && searchJobData(searchJobForm.value);"
+					 novalidate="false">
+						<div class="row">
+							<div class="col-md-12 col-lg-12 col-xl-6">
+								<div class="select_range_wrap date_wrap_main">
+									<div class="date_wrap pos-rel seachEmpJobDateWrap">
+										<my-date-picker name="startdate" [options]="startDateOptions" [formControl]="searchJobForm.controls['startdate']" [placeholder]="placeholder"
+										 (dateChanged)="onStartDateChanged($event)"></my-date-picker>
+									</div>
+									<div class="date_wrap  pos-rel seachEmpJobDateWrap">
+										<my-date-picker name="enddate" [options]="endDateOptions" [formControl]="searchJobForm.controls['enddate']" [placeholder]="placeholder1"
+										 (dateChanged)="onEndDateChanged($event)"></my-date-picker>
+
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 col-lg-12 col-xl-6 category_filter_wrap orderChange">
+								<div class="filter_by_wrap">
+									<div class="filter-wrap width100">
+										<div class="select_wrap first-wrap">
+											<select class="form-control" name="state_id" [formControl]="searchJobForm.controls['state_id']">
+												<option value="" selected="selected">- Select State -</option>
+												<option *ngFor="let dataArray of statesArray; let i = index;" value="{{ dataArray.id }}">
+													{{ dataArray.name }}
+												</option>
+											</select>
+										</div>
+										<div class="select_wrap second-wrap categoryMultiSelect">
+											<angular2-multiselect [data]="dropdownList" [formControl]="searchJobForm.controls['category_id']" [(ngModel)]="selectedItems"
+											 [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+											 (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+											<div class="arrow" style="top:17px!important;right:18px!important;"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="message_employee_btn_wrap youer-bid submitWrap">
+								<div class="btn_wrap d-flex">
+									<button class="Job-detail-btn pink-btn" type="submit">Search</button>
+								</div>
+							</div>
+
+
+						</div>
+					</form>
+				</div>
+				<span *ngIf="jobsArray?.length > 0">
+					<div class="job-post-description mobile_dis_none" *ngFor="let job of jobsArray | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
+						<div>
+							<div class="title_wrap">
+								<div class="title">
+									<h3 class="color-pink">{{job.title}}</h3>
+									<span *ngIf="job.company_name!=null">
+										<p>{{job.company_name}}</p>
+									</span>
+				<span *ngIf="job.company_name == ''">
+										<p>Personal</p>
+									</span>
+			</div>
+			<div class="date_time_title">
+				<span class="date">
+										{{job.startdate}} to {{job.enddate}}
+									</span>
+				<span class="time">
+										{{job.starttime }} to {{job.endtime}}
+									</span>
+			</div>
+			<div class="company-logo">
+				<img src={{job.company_logo}} alt="">
+			</div>
+		</div>
+		<div class="job_dec_wrap">
+			<div class="job_des">
+				<span class="job_dec_title">Job Description :</span>
+				<span class="job-detail_info"> {{job.description }}</span>
+			</div>
+			<!-- =========== share icon for desktop ============= -->
+			<div class="share_anchor dropdown shareicon-desktop" style="padding-right: 0px;">
+				<button class="share-block" data-toggle="dropdown" style="padding-right: 0px;text-align:right;">
+										<span class="share-icon shareicon-pink imagePink"></span>
+										<span class="text hidden-sm-down" style="color:#9E3C6F!important">SHARE</span>
+									</button>
+				<div class="share-buttons-frame dropdown-menu top-60">
+					<share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [show]="14" [title]="job.title" [description]="job.description"
+					 [url]="shareBaseUrl[i]"></share-buttons>
+					<a href="mailto:?subject=Job Share&body={{job.description}} {{shareBaseUrl[i]}}" class="emailShareBtn"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="cost_wrap">
+			<div class="cost_and_date_of_job">
+				<p>Cost:
+					<span class="rupee_sign">
+									</span> {{job.total_wage | currency:'INR':true:'1.2-2'}}
+				</p>
+				<div class="total_hour_wrap">Total Hours : {{job.total_time}} hrs</div>
+			</div>
+			<span class="no_of_position">No. Of Positions Remaining:
+									<span class="number">{{job.positions}}</span>
+			</span>
+			<span class="no_of_position">
+									<span class="number">{{job.jobcost }}</span>
+			</span>
+			<!-- =========== share icon for tab ======== -->
+			<div class="share_anchor dropdown shareicon-tab">
+				<button class="share-block" data-toggle="dropdown">
+										<span class="share-icon shareicon-pink"></span>
+										<span class="text hidden-sm-down">SHARE</span>
+									</button>
+				<div class="share-buttons-frame dropdown-menu top-60">
+					<share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [show]="14" [title]="job.title" [description]="job.description"
+					 [url]="shareBaseUrl[i]"></share-buttons>
+					<a href="mailto:?subject=Job Share&body={{job.description}} {{shareBaseUrl[i]}}" class="emailShareBtn"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+				</div>
+			</div>
+
+			<!-- ==================== end ==================== -->
+			<div class="d-flex message_employee_btn_wrap">
+				<div class="btn_wrap">
+					<span *ngIf="job.userBidStatus ==''">
+											<span *ngIf="job.jobcost != 'non-negotiable'">
+												<button class="btn-brown Job-detail-btn" (click)="getJobDetailsById(job.job_id)" data-target="#placebid" data-toggle="modal"
+												 data-backdrop="static">Place Bid</button>
+											</span>
+					<span *ngIf="job.jobcost == 'non-negotiable'">
+												<button class="btn-brown Job-detail-btn" (click)="setVal(job.buyer_cost,job.job_id);">Apply</button>
+											</span>
+					<button class="Job-detail-btn pink-btn" [routerLink]="['/viewEmployeeJob/'+job.job_id]">Job Detail</button>
+					</span>
+					<span *ngIf="job.userBidStatus !=''">
+											<div class="message_employee_btn_wrap youer-bid">
+												<div class="btn_wrap d-flex">
+													<p class="color-pink">You've Bid on it.</p>
+													<button class="Job-detail-btn pink-btn" [routerLink]="['/viewEmployeeJob/'+job.job_id]">Job Detail</button>
+												</div>
+											</div>
+										</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<pagination-controls (pageChange)="p = $event" class="mobile_dis_none"></pagination-controls>
+</span>
+<span *ngIf="jobMsg !=''">
+					<div class="job-post-description mobile_dis_none">
+						<p class="errorMessage {{msgClass}}">{{jobMsg}}</p>
+					</div>
+				</span>
+
+<!-- ================================mobile  ====================== -->
+<span *ngIf="jobsArray?.length > 0">
+					<div class="job-post-description mobile-dis-block" *ngFor="let job of jobsArray | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
+						<div>
+							<div class="title_wrap">
+								<div class="title">
+									<h3 class="color-pink">{{job.title}}</h3>
+									<span *ngIf="job.company_name!=null">
+										<p>{{job.company_name}}</p>
+									</span>
+<span *ngIf="job.company_name == ''">
+										<p>Personal</p>
+									</span>
+</div>
+<div class="company-logo">
+	<img src={{job.company_logo}} alt="">
+</div>
+</div>
+<div class="mobile_date_published_wrap {{mobileClass}}">
+	<div class="date_time_title">
+		<span class="date">
+										{{job.startdate}} to {{job.enddate}}
+									</span>
+		<span class="time">
+										{{job.starttime }} to {{job.endtime}}
+									</span>
+		<div class="total_hour_wrap">
+			{{job.total_time}} hrs
+		</div>
+	</div>
+</div>
+<div class="cost_wrap">
+	<div class="cost_and_date_of_job">
+		<p>Cost:
+			<span class="rupee_sign">
+									</span> {{job.total_wage | currency:'INR':true:'1.2-2'}}
+
+		</p>
+	</div>
+	<div class="btn-wrap-mobile">
+		<div class="share_anchor dropdown rightShift">
+			<button class="share-block" data-toggle="dropdown">
+											<span class="share-icon shareicon-pink"></span>
+											<span class="text hidden-sm-down">SHARE</span>
+										</button>
+			<div class="share-buttons-frame dropdown-menu top-60" style="left:10px;right:auto;">
+				<share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [show]="14" [title]="job.title" [description]="job.description"
+				 [url]="shareBaseUrl[i]"></share-buttons>
+				<a href="mailto:?subject=Job Share&body={{job.description}} {{shareBaseUrl[i]}}" class="emailShareBtn"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+			</div>
+		</div>
+		<div>
+			<span *ngIf="job.userBidStatus ==''">
+											<span *ngIf="job.jobcost != 'non-negotiable'">
+												<button class="btn-brown Job-detail-btn" (click)="getJobDetailsById(job.job_id)" data-target="#placebid" data-toggle="modal"
+												 data-backdrop="static">Place Bid</button>
+											</span>
+			<span *ngIf="job.jobcost == 'non-negotiable'">
+												<button class="btn-brown Job-detail-btn" (click)="setVal(job.buyer_cost,job.job_id);">Apply</button>
+											</span>
+			<button class="Job-detail-btn pink-btn" [routerLink]="['/viewEmployeeJob/'+job.job_id]">Job Detail</button>
+			</span>
+			<span *ngIf="job.userBidStatus !=''">
+												<div class="message_employee_btn_wrap youer-bid">
+													<div class="btn_wrap d-flex">
+														<p class="color-pink">You've Bid on it.</p>
+														<button class="Job-detail-btn pink-btn" [routerLink]="['/viewEmployeeJob/'+job.job_id]">Job Detail</button>
+													</div>
+												</div>
+											</span>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</span>
+<span *ngIf="jobMsg !=''">
+					<div class="job-post-description mobile-dis-block">
+						<p class="errorMessage {{msgClass}}">{{jobMsg}}</p>
+					</div>
+				</span>
+<!-- ====================================== -->
+
+</div>
+<div class="col-md-12 col-lg-12 col-xl-3 ">
+	<div class="advertisement text-center">
+		<!-- first ads -->
+		<ng-adsense [adClient]="'ca-pub-2201288336602886'" [adSlot]="6270830582" [display]="'inline-block'" [width]="130" [height]="50">
+		</ng-adsense>
+
+	</div>
+</div>
+</div>
+</div>
+
+<!-- mobile filters tags  -->
+<div class="floating_filters_mobile_wrap">
+	<a href="#" data-toggle="modal" data-target="#filter_modal">
+			<img src="assets/images/filter_mobile.png">
+		</a>
+</div>
+</div>
+<pagination-controls (pageChange)="p = $event" class="hidden-md-up"></pagination-controls>
+
+<!-- ====================== Place Bid modal =================== -->
+
+<div class="modal userMessage fade" id="placebid" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form #ebsbform="ngForm" [formGroup]="employeeSearchBidForm" (ngSubmit)="employeeSearchBidForm.valid && postBidData(employeeSearchBidForm.value,ebsbform);"
+			 novalidate="false">
+				<div class="m-body">
+					<label>PLACE A BID</label>
+
+					<p *ngIf="(employeeSearchBidForm.controls['bid_value'].hasError('required') &&  ebsbform.submitted)" class="errorMessage error-message">*Bid amount can't be empty.</p>
+
+					<p class="errorMessage {{msgClass}}" *ngIf="bidMsg!=null">{{bidMsg}}</p>
+
+					<p style="color:#B81C38">The buyer wage is {{ buyerCost | currency:'INR':true:'1.0-2'}}/{{(wageType == 'per day') ? 'day' : (wageType == 'per
+						hour') ? 'hour' : '-'}}</p>
+
+					<label class="bid_amount_text">Bid Amount</label>
+					<div class="inputWrap pos-rel">
+						<input type="text" #maxValue name="bid_value" pattern="[0-9]*" (keypress)="checkNumeric($event)" [formControl]="employeeSearchBidForm.controls['bid_value']">
+					</div>
+				</div>
+				<div class="text-right">
+					<input type="submit" class="blueBtn pink-btn" value="submit">
+					<input type="button" class="blueBtn btn-brown cancle-btn" #closebidbox data-dismiss="modal" (click)="cancleForm(ebsbform)"
+					 value="Cancel">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- ===================== end ================= -->
+
+<!-- ============================ filter modal ======================== -->
+
+<div class="modal filter_modal fade search_filter_modal" id="filter_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form #Searchform="ngForm" [formGroup]="searchJobForm" (ngSubmit)="searchJobForm.valid && searchJobData(searchJobForm.value);"
+			 novalidate="false">
+
+				<div class="modal-body myjobPage searchJobs searchJobPopup">
+					<div class="select_range_wrap">
+
+						<div class="date_wrap pos-rel">
+							<my-date-picker name="startdate" [options]="startDateOptions" [formControl]="searchJobForm.controls['startdate']" [placeholder]="placeholder"
+							 (dateChanged)="onStartDateChanged($event)"></my-date-picker>
+						</div>
+						<div class="date_wrap  pos-rel">
+							<my-date-picker name="enddate" [options]="endDateOptions" [formControl]="searchJobForm.controls['enddate']" [placeholder]="placeholder1"
+							 (dateChanged)="onEndDateChanged($event)"></my-date-picker>
+						</div>
+					</div>
+					<select class="current-job" name="state_id" [formControl]="searchJobForm.controls['state_id']">
+						<option value="" selected="selected">- Select State -</option>
+						<option *ngFor="let dataArray of statesArray; let i = index;" value="{{ dataArray.id }}">
+							{{ dataArray.name }}
+						</option>
+					</select>
+					<div class="categoryMultiSelect">
+
+						<angular2-multiselect [data]="dropdownList" [formControl]="searchJobForm.controls['category_id']" [(ngModel)]="selectedItems"
+						 [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+						 (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+						<span></span>
+						<div class="arrow">
+						</div>
+					</div>
+					<div class="message_employee_btn_wrap youer-bid">
+						<div class="btn_wrap d-flex">
+							<button hidden class="greyBtn" #closeSearchModalBtn id="delete-node" data-dismiss="modal"></button>
+							<button class="Job-detail-btn pink-btn a-pink-btn-pop" type="submit">Search</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- ======================= end ==================== -->

@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "9PUGZY647R.com.motipotli",
+        "paths": [
+          "/viewJobDetails/*"
+        ]
+      }
+    ]
+  }
+}

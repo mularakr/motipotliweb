@@ -1,0 +1,15 @@
+export interface User{ 
+    id?:string,
+    name:string,
+    email:string,
+    phone:String,
+    state_id:number,
+    city_id:number,
+    password:string,
+    role:string,
+    address:string,
+    comapany:string,
+    location:string,
+    profileimg:string,
+    access_token :string,
+}

@@ -1,0 +1,9 @@
+<div class="bg_grey">
+    <div class="container_1560">
+        <div class="edit_profile_wrap about_us_page">
+            <h2>About Us</h2>
+            <div *ngIf="mydata!=''" [innerHTML]="mydata"></div>
+            <p class="errorMessage {{msgClass}}" *ngIf="message != ''">{{message}}</p>
+        </div>
+    </div>
+</div>

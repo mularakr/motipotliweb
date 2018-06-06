@@ -1,0 +1,42 @@
+<div class="bg_grey">
+	<div class="container_1560">
+		<div class="edit_profile_wrap about_us_page">
+			<h2>Post a new Job</h2>
+			<div *ngIf="mydata!=''" [innerHTML]="mydata">
+			</div>
+			<p class="errorMessage {{msgClass}}" *ngIf="message != ''">{{message}}</p>
+		</div>
+	</div>
+</div>
+<!-- ====================== Search Model modal =================== -->
+<div class="modal filter_modal fade search_filter_modal" id="searchModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form [formGroup]="geoForm" (ngSubmit)="geoForm.valid && geoFormData(geoForm.value);" novalidate="false">
+				<div class="modal-body myjobPage searchJobs searchJobPopup">
+					<div class="select_range_wrap">
+						<h3>Enter Text</h3>
+						<div class="date_wrap pos-rel">
+							<input placeholder="job title,keyword,description.." [formControl]="geoForm.controls['searchKey']" name="searchKey" type="text">
+						</div>
+					</div>
+					<h3>Filter By</h3>
+					<span></span>
+					<span></span>
+					<div class="message_employee_btn_wrap youer-bid">
+						<div class="btn_wrap d-flex">
+							<span *ngIf="isUserLoggedIn =='employee'">
+							<button class="Job-detail-btn pink-btn a-pink-btn-pop" type="submit">Search</button>
+							</span>
+							<span *ngIf="isUserLoggedIn !='employee'">
+							<button class="Job-detail-btn a-blue-btn-pop" type="submit">Search</button>
+							</span>
+							<button class="blueBtn btn-brown cancle-btn a-pink-btn-pop" #closeBtn data-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,121 @@
+<div #signup class="modal loginModal signupModal fade" id="signup_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="leftInfoDiv">
+                    <div class="logo text-center">
+                        <span></span>
+                    </div>
+                    <div class="compInfo">
+                        <div [innerHTML]="aboutmydata"></div>
+                    </div>
+                </div>
+                <div class="formDiv">
+                    <form #f="ngForm" [formGroup]="addUserForm" (ngSubmit)="addUserForm.valid && signUpData(addUserForm.value,f);" novalidate="false">
+                        <button type="button" class="close" (click)="closeRegisterForm(f);" data-dismiss="modal">&times;</button>
+                        <h4>Sign up</h4>
+                        <p style="color:red" class="errorMessage" *ngIf="msg != null">{{ msg }}</p>
+                        <div class="field">
+                            <input type="text" minlength="5" maxlength="50" name="name" pattern="[a-zA-Z][a-zA-Z ]+" [formControl]="addUserForm.controls['name']"
+                                placeholder="Full Name">
+                            <p *ngIf="(addUserForm.controls['name'].hasError('required') && f.submitted)" class="errorMessage" style="color:red">*Full Name can't be Empty.</p>
+                            <p class="errorMessage" *ngIf="(addUserForm.controls['name'].hasError('pattern') && f.submitted)" style="color:red">*Only alphabets allowed.</p>
+
+                            <p class="errorMessage" *ngIf="(addUserForm.controls['name'].hasError('pattern') == false) && (addUserForm.controls['name'].hasError('minlength') && f.submitted )"
+                                style="color:red">*Username must be minimum 5 characters.</p>
+                        </div>
+                        <div class="field">
+                            <input type="text" pattern="[0-9]*" minlength="10" maxlength="10" name="phone" (keypress)="checkNumeric($event)" [formControl]="addUserForm.controls['phone']"
+                                placeholder="Phone Number">
+                            <p class="errorMessage" *ngIf=" (addUserForm.controls['phone'].hasError('required') && f.submitted )" style="color:red">*Phone can't be Empty.</p>
+                            <p class="errorMessage" *ngIf="(addUserForm.controls['phone'].hasError('pattern') && f.submitted)" style="color:red">*Phone number should be only numbers.</p>
+                            <p class="errorMessage" *ngIf="(addUserForm.controls['phone'].hasError('pattern') == false) && (addUserForm.controls['phone'].hasError('minlength') && f.submitted )"
+                                style="color:red">*Mobile should be 10digit.</p>
+                        </div>
+                        <div class="field clearfix">
+                            <div>
+                                <select name="state_id" [formControl]="addUserForm.controls['state_id']" (change)="onSelect($event.target.value)">
+                                    <option value="" selected="selected">--State--</option>
+                                    <option *ngFor="let data of states; let i = index;" value="{{ data.id }}">
+                                        {{ data.name }}
+                                    </option>
+                                </select>
+                                <p class="errorMessage" *ngIf="(addUserForm.controls['state_id'].hasError('required') &&  f.submitted)" style="color:red">*State can't be Empty.</p>
+                            </div>
+                            <div>
+                                <select name="city_id" [formControl]="addUserForm.controls['city_id']">
+                                    <option value="" selected="selected">--City--</option>
+                                    <option *ngFor="let cityData of cities" value="{{cityData.id}}">{{cityData.city}}</option>
+                                </select>
+                                <p class="errorMessage" *ngIf="(addUserForm.controls['city_id'].hasError('required') && f.submitted)" style="color:red">*City can't be Empty.</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <input type="text" name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [formControl]="addUserForm.controls['email']"
+                                placeholder="Email">
+                            <p class="errorMessage" *ngIf="(addUserForm.controls['email'].hasError('required') && f.submitted )" style="color:red">*Email can't be Empty.</p>
+                            <p class="errorMessage" *ngIf="(addUserForm.controls['email'].hasError('pattern') && f.submitted)" style="color:red">*Email is invalid.</p>
+
+                        </div>
+                        <div class="field">
+                            <input type="password" name="password" pattern="^.*(?=.{5,15})[a-zA-Z0-9]*$" [formControl]="addUserForm.controls['password']"
+                                placeholder="password">
+                            <p class="errorMessage" *ngIf="(addUserForm.controls['password'].hasError('required') && f.submitted )" style="color:red">*Password can't be Empty.</p>
+                            <p class="errorMessage" *ngIf="(addUserForm.controls['password'].hasError('pattern') && f.submitted )" style="color:red">*Password should be between 5-15 Characters.</p>
+                        </div>
+                        <div class="signup_wrap">
+                            <div class="custm-check-box-wrap ">
+                                <input id="term_condition" name="term" [formControl]="addUserForm.controls['term']" type="checkbox" required>
+                                <label for="term_condition">I agree with Motipotli
+                                    <a [routerLink]="['/termsCondition']" target="_blank" class="terms_anchor" style="cursor: pointer;">Terms and Conditions</a>
+                                </label>
+                                <p class="errorMessage" *ngIf="(addUserForm.controls['term'].hasError('required') && f.submitted )" style="color:red">*Please check Terms and Conditions.</p>
+                            </div>
+                            <div class="actionBtn clearfix">
+                                <button class="loginBtn" type="submit">SIGN UP</button>
+                                <button class="btn btn-danger" #signUpclose id="delete_node" name="button" data-dismiss="modal" hidden="hidden"></button>
+                            </div>
+                        </div>
+                        <p class="text-center creatAccountLink mb-0">Already have an account ?
+                            <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#login_modal" (click)="add_class()" class="blueLink">click here</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="blueBtn" #confirmRegisterModelOpen hidden data-toggle="modal" data-target="#confirmRegisterModel" data-backdrop="static"></button>
+<!-- Modal -->
+<div class="modal fade" id="term" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Terms and Conditions</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="" *ngIf="myTermsdata!=''">
+                <p [innerHTML]="myTermsdata"></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--confirmRegisterModel Model -->
+<div class="modal userMessage fade" id="confirmRegisterModel" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="m-body">
+                <label>Alert</label>
+                <span class="{{msgClass}}" *ngIf="confirmMsg !=''">{{confirmMsg}}</span>
+            </div>
+            <div class="text-right">
+                <button class="greyBtn" (click)="closeConfirmDilog()" id="delete-node" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--confirmRegisterModel Model -->

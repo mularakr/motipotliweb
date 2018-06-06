@@ -1,0 +1,256 @@
+<div class="booked-jobs-wrap bg_grey pos-rel open_jobs myjobPage searchJobs">
+    <div class="booked-jobs-wrap container_1560">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 ">
+                <div class="booked_job_tab">
+                    <div class="filter_by_wrap">
+                        <h5>Search Job Results</h5>
+                    </div>
+                </div>
+                <span *ngIf="jobsArray?.length > 0">
+                    <div class="job-post-description classGeographicalSearch job_complete_by_employee" *ngFor="let job of jobsArray | paginate: { itemsPerPage: 5, currentPage: p };let i = index;">
+                        <div>
+                            <div class="title_wrap">
+                                <div class="title">
+                                    <span *ngIf="loginType == ''">
+                                        <h3>{{job.title}}</h3>
+                                    </span>
+                                    <span *ngIf="loginType == 'employer'">
+                                        <h3>{{job.title}}</h3>
+                                    </span>
+                                    <span *ngIf="loginType == 'employee'">
+                                        <h3 class="color-pink">{{job.title}}</h3>
+                                        <!--shareicon-pink-->
+                                    </span>
+                                    <span *ngIf="job.company_name!=null">
+                                        <p>{{job.company_name}}</p>
+                                    </span>
+                                    <span *ngIf="job.company_name == ''">
+                                        <p>Personal</p>
+                                    </span>
+                                </div>
+                                <div class="date_time_title">
+                                    <span class="date">
+                                        {{job.startdate}} to {{job.enddate}}
+                                    </span>
+                                    <span class="time">
+                                        {{job.starttime}} - {{job.endtime}}
+                                    </span>
+                                </div>
+                                <div class="company-logo">
+                                    <img src={{job.company_logo}} alt="">
+                                </div>
+                            </div>
+                            <div class="job_dec_wrap">
+                                <div class="job_des">
+                                    <span class="job_dec_title">Job Description :</span>
+                                    <span class="job-detail_info">{{job.description }}</span>
+                                </div>
+                                <!-- =========== share icon for desktop ============= -->
+                                <div class="employer-job-shareicon-frame" *ngIf="loginType == 'employer' || loginType == '' ">
+                                    <div class="share_anchor shareicon-desktop dropdown" >
+                                        <button class="share-block" data-toggle="dropdown">
+                                            <span class="share-icon"></span>
+                                            <span class="text">SHARE</span>
+                                        </button>
+                                        <!--shareicon-pink-->
+                                        <div class="share-buttons-frame dropdown-menu">
+                                                <share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [show]="14" [title]="job.title"
+                                                [description]="job.description" [url]="shareBaseUrl[i]"></share-buttons>
+                                                <a href="mailto:?subject=Job Share&body={{job.description}} {{shareBaseUrl[i]}}" class="emailShareBtn"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="employee-job-shareicon-frame" *ngIf="loginType == 'employee'" style="width:25%">
+                                    <div class="share_anchor  dropdown sharebtnCust" style="width:auto;padding-top:0px;margin-left:auto;margin-bottom:10px;">
+                                        <button class="share-block " data-toggle="dropdown">
+                                            <span class="share-icon shareicon-pink"></span>
+                                            <span class="text hidden-sm-down">SHARE</span>
+                                        </button>
+                                        <!--shareicon-pink-->
+                                        <div class="share-buttons-frame dropdown-menu">
+                                            <share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [title]="job.title" [description]="job.description"
+                                                [url]="shareBaseUrl[i]"></share-buttons>
+                                            <a href="mailto:?subject=Job Share&body={{job.description}} {{shareBaseUrl[i]}}" class="emailShareBtn"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+                                            <!-- <share-buttons></share-buttons> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cost_wrap">
+                                <div class="cost_and_date_of_job">
+                                    <p>Cost:
+                                        <span class="rupee_sign">
+                                        </span> {{job.total_wage | currency:'INR':true:'1.2-2'}}</p>
+                                    <div class="total_hour_wrap">Total Hours : {{job.total_time}} hrs</div>
+                                </div>
+                                <span class="no_of_position">No. Of Positions Remaining:
+                                    <span class="number">{{job.positions}}</span>
+                                </span>
+                                <span class="no_of_position">
+                                    <span class="number">{{job.jobcost }}</span>
+                                </span>
+                                <!-- =========== share icon for tab ======== -->
+                                <div class="share_anchor shareicon-tab">
+                                    <a href="#">
+                                        <span class="share-icon shareicon-pink"></span>
+                                        <span class="text">SHARE</span>
+                                    </a>
+                                </div>
+                                <!-- ==================== end ==================== -->
+                                <div class="d-flex message_employee_btn_wrap">
+                                    <div class="btn_wrap">
+                                        <span *ngIf="loginType == ''">
+                                            <button class="btn-brown Job-detail-btn" data-toggle="modal" data-target="#login_modal" data-backdrop="static" *ngIf="job.jobcost == 'non-negotiable'">Apply</button>
+                                            <button class="btn-brown Job-detail-btn" data-toggle="modal" data-target="#login_modal" data-backdrop="static" *ngIf="job.jobcost != 'non-negotiable'">Place Bid</button>
+                                            <button data-toggle="modal" [routerLink]="['/viewJobDetails/'+job.job_id]" class="Job-detail-btn">Job Details</button>
+                                        </span>
+                                        <span *ngIf="loginType == 'employer'">
+                                            <button class="btn-brown Job-detail-btn" data-toggle="modal" data-target="#loginalert2" data-backdrop="static" *ngIf="job.jobcost == 'non-negotiable'">Apply</button>
+                                            <button class="btn-brown Job-detail-btn" data-toggle="modal" data-target="#loginalert2" data-backdrop="static" *ngIf="job.jobcost != 'non-negotiable'">Place Bid</button>
+                                            <button [routerLink]="['/viewJobDetails/'+job.job_id]" class="Job-detail-btn">Job Details</button>
+                                        </span>
+                                        <span *ngIf="loginType == 'employee'">
+                                            
+                                            <span *ngIf="job.userBidStatus ==''">
+                                                    <button class="btn-brown Job-detail-btn" *ngIf="job.jobcost == 'non-negotiable'"  (click)="setVal(job.buyer_cost,job.job_id);">Apply</button>
+                                                    
+                                                    <button class="btn-brown Job-detail-btn" *ngIf="job.jobcost != 'non-negotiable'" (click)="getJobDetailsById(job.job_id)" data-target="#placebid" data-toggle="modal"
+                                                    data-backdrop="static">Place Bid</button>
+                                            </span>
+                                            <span *ngIf="job.userBidStatus !=''">                                 
+                                                    <span class="color-pink" style='margin-right:10px;'>You've Bid on it</span>      
+                                            </span>
+                                            <button [routerLink]="['/viewEmployeeJob/'+job.job_id]" class="Job-detail-btn pink-btn">Job Details</button>
+                                        </span>                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </span>
+                <span *ngIf="jobMsg != ''">                    
+                    <div class="job-post-description job_complete_by_employee">
+                        <p class="errorMessage {{msgClass}}">{{jobMsg}}</p>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ====================== Login Alert modal =================== -->
+<div class="modal userMessage fade" id="loginalert" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!--Form-->
+            <div class="m-body">
+                <label>Login Alert</label>
+                <label class="bid_amount_text">Please register/login for apply</label>
+            </div>
+            <div class="text-right">
+                <input type="button" class="blueBtn btn-brown cancle-btn" data-dismiss="modal" value="Cancel">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal userMessage fade" id="loginalert2" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!--Form-->
+            <div class="m-body">
+                <label>Message</label>
+                <label class="bid_amount_text">
+                    <p class="errorMessage">You can not apply for this job as you are logged in as an Employer. Please logout, login as an Employee
+                        and apply for this job</p>
+                </label>
+            </div>
+            <div class="text-right">
+                <input type="button" class="blueBtn btn-brown cancle-btn" data-dismiss="modal" value="Cancel">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===================== end ================= -->
+
+<!-- ====================== Search Model modal =================== -->
+<div class="modal filter_modal fade search_filter_modal" id="searchModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form [formGroup]="geoForm" (ngSubmit)="geoForm.valid && geoFormData(geoForm.value);" novalidate="false">
+
+                <div class="modal-body myjobPage searchJobs searchJobPopup">
+                    <div class="select_range_wrap">
+                        <h3>Enter Text</h3>
+                        <div class="date_wrap pos-rel">
+                            <input placeholder="job title,keyword,description.." [formControl]="geoForm.controls['searchKey']"
+                                name="searchKey" type="text">
+                        </div>
+                    </div>
+                    <h3>Filter By</h3>
+                    <select name="city_id" [formControl]="geoForm.controls['city_id']">
+                            <option value="" selected="selected">- City -</option>
+                            <option *ngFor="let dataArray of cityArray; let i = index;" value="{{ dataArray.id }}">
+                                {{ dataArray.name }}
+                            </option>
+                            </select>                      
+                    <span>
+                    </span>
+                    <select class="form-control" name="category_id" [formControl]="geoForm.controls['category_id']">
+                        <option value="" selected="selected">- Categories -</option>
+                        <option *ngFor="let dataArray of temp; let i = index;" value="{{ dataArray.id }}">
+                            {{ dataArray.name }}
+                        </option>
+                    </select>
+                    <span>
+                    </span>
+                    <div class="message_employee_btn_wrap youer-bid">
+                        <div class="btn_wrap d-flex">
+                            <span *ngIf="isUserLoggedIn =='employee'">
+                                <button class="Job-detail-btn pink-btn a-pink-btn-pop" type="submit">Search</button>
+                            </span>
+                            <span *ngIf="isUserLoggedIn !='employee'">
+                                <button class="Job-detail-btn a-blue-btn-pop" type="submit">Search</button>
+                            </span>
+                            <button class="blueBtn btn-brown cancle-btn a-pink-btn-pop" #closeBtn data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ====================== Place Bid modal =================== -->
+
+<div class="modal userMessage fade" id="placebid" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form #geoplaceform="ngForm" [formGroup]="geoSearchBidForm" (ngSubmit)="geoSearchBidForm.valid && postBidData(geoSearchBidForm.value,geoplaceform);"
+                novalidate="false">
+                <div class="m-body">
+                    <label>PLACE A BID</label>
+
+                    <p *ngIf="(geoSearchBidForm.controls['bid_value'].hasError('required') &&  geoplaceform.submitted)" class="errorMessage error-message">*Bid amount can't be empty.</p>
+
+                    <p class="errorMessage {{msgClass}}" *ngIf="bidMsg!=null">{{bidMsg}}</p>
+                    
+                    <p style="color:#B81C38">The buyer wage is {{ buyerCost | currency:'INR':true:'1.0-2'}}/{{(wageType == 'per day') ? 'day' : (wageType == 'per hour') ? 'hour' : '-'}}</p>
+                    
+                    <label class="bid_amount_text">Bid Amount</label>
+                    <div class="inputWrap pos-rel">
+                        <input type="text" #maxValue name="bid_value" pattern="[0-9]*" (keypress)="checkNumeric($event)" [formControl]="geoSearchBidForm.controls['bid_value']">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <input type="submit" class="blueBtn pink-btn" value="submit">
+                    <input type="button" class="blueBtn btn-brown cancle-btn" #closebidbox data-dismiss="modal" (click)="cancleForm(geoplaceform)"
+                        value="Cancel">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ===================== end ================= -->

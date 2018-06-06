@@ -1,0 +1,68 @@
+<div class="bg_grey mytransaction_page">
+    <div class="container_1560">
+        <div class="edit_profile_wrap mytransaction_wrap">
+            <h2>My Transactions</h2>
+            <div class="transaction-detail-form employee-transaction-detail">
+                <form #historysearchEmployeeform="ngForm" [formGroup]="historySearchEmployeeForm" (ngSubmit)="historySearchEmployeeForm.valid && searchEmployeeTransactionHistory(historySearchEmployeeForm.value);"
+                    novalidate="false">
+                    <div class="d-flex employeeTranfliterWrap">
+                        <div class="flex-20 mar-rt-30 order-1-tab">
+                            <div class="form-group pos-rel">
+                                <label>Start date</label>
+                                    <my-date-picker name="startdate" [options]="startDateOptions" [formControl]="historySearchEmployeeForm.controls['startdate']"
+                                    [placeholder]="placeholder" (dateChanged)="onStartDateChanged($event)"></my-date-picker>
+                            </div>
+                        </div>
+                        <div class="flex-20 mar-rt-30 order-2-tab">
+                            <div class="form-group pos-rel">
+                                <label>End date</label>
+                                <my-date-picker name="enddate" [options]="endDateOptions" [formControl]="historySearchEmployeeForm.controls['enddate']" [placeholder]="placeholder1"
+                                    (dateChanged)="onEndDateChanged($event)">
+                                </my-date-picker>                            
+                            </div>
+                        </div>                       
+                        <div class="searchBtnWrap">
+                                <button class="submit_query_btn pink-btn" type="submit" style="border:none">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="transaction_detail_wrap">
+                <table class="{{myclassTable}}">
+                    <thead>
+                        <tr>
+                            <th class="width-20">Job Title</th>
+                            <th class="width-20">Job Posted By</th>
+                            <th class="width-15">Date</th>
+                            <th class="width-15">Amount(INR)</th>
+                            <th class="width-30">Payment Method</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="dataArray?.length > 0">
+                        <tr *ngFor="let history of dataArray | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                            <td class="width-20">{{history.job_title}}</td>
+                            <td class="width-20">{{history.company_name}}</td>
+                            <td class="width-15">{{history.payment_date}}</td>
+                            <td class="width-15">{{history.payment_amount}} /-</td>
+                            <td class="width-30">
+                                <span syle="padding-center:0px!important;">By {{history.payment_mode}}</span>
+                            </td>
+                        </tr>
+                        <tr style="background: transparent;" class="paginationWrap">
+                            <td colspan="5">
+                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="msg!=''">
+                        <tr>
+                            <td colspan="5">
+                                <p class="errorMessage {{msgClass}}">{{msg}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>

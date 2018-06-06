@@ -1,0 +1,374 @@
+<div class="overflowWrap">
+    <div class="booked-jobs-wrap bg_grey pos-rel open_jobs myjobPage searchJobs mybids_page">
+        <div class="booked-jobs-wrap container_1560">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-xl-9 pad-lf-10">
+                    <div class="booked_job_tab mybids_filters_wrap a_BidfilterWrap">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6 col-xl-6">
+                                <div class="select_range_wrap ">
+                                    <span class="dateLable">Select Date Range</span>
+                                    <form [formGroup]="myForm" novalidate="false">
+                                        <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" (dateRangeChanged)="onDateRangeChanged($event)"
+                                            [formControl]="myForm.controls['myDateRange']" class="datepicker1"></my-date-range-picker>
+                                    </form>
+                                    <!--<div class="date_wrap pos-rel">
+                                        <my-date-picker name="startdate" [options]="startDateOptions"  [placeholder]="placeholder"
+                                        [(ngModel)]="startdate"  (dateChanged)="onStartDateChanged($event)"></my-date-picker>
+                                </div>
+                                <div class="date_wrap  pos-rel">
+                                        <my-date-picker name="enddate" [options]="endDateOptions"  [placeholder]="placeholder1"
+                                        [(ngModel)]="endDate" (dateChanged)="onEndDateChanged($event)"></my-date-picker>
+                                </div>-->
+
+                                    <!-- <div class="date_wrap pos-rel">
+                                    <input type="text">
+                                    <span class="calender-icon"></span>
+                                </div>
+                                <div class="date_wrap  pos-rel">
+                                    <input type="text">
+                                    <span class="calender-icon"></span>
+                                </div>-->
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-6">
+                                <div class="filter_by_wrap">
+                                    <div class="filter-wrap">
+                                        <span style="margin-bottom: 16px;">Filter By</span>
+                                        <div class="select_wrap">
+                                            <select class="mar-rt-25">
+                                                <option>Current Bids</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span *ngIf="jobsArray?.length > 0">
+                        <div class="job-post-description mobile_dis_none" *ngFor="let job of jobsArray | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
+                            <div>
+                                <div class="title_wrap">
+                                    <div class="title">
+                                        <h3 class="color-pink">{{job.title}}</h3>
+                                        <span *ngIf="job.company_name!=null">
+                                            <p>{{job.company_name}}</p>
+                                        </span>
+                                        <span *ngIf="job.company_name == ''">
+                                            <p>Personal</p>
+                                        </span>
+                                    </div>
+                                    <div class="date_time_title">
+                                        <span class="date">
+                                            {{job.startdate}} to {{job.enddate}}
+                                        </span>
+                                        <span class="time">
+                                            {{job.starttime }} to {{job.endtime}}
+                                        </span>
+                                    </div>
+                                    <div class="company-logo">
+                                        <img src={{job.company_logo}} alt="">
+                                    </div>
+                                </div>
+                                <div class="job_dec_wrap wrap_flex_wrap">
+                                    <div class="job_des">
+                                        <span class="job_dec_title">Job Description :</span>
+                                        <span class="job-detail_info">{{job.description }}</span>
+                                    </div>
+                                    <!-- =========== share icon for desktop ============= -->
+                                    <!-- <div class="share_anchor shareicon-desktop">
+                                    <a href="#"><span class="share-icon shareicon-pink"></span> <span class="text">SHARE</span></a>
+                                </div> -->
+                                    <!-- =========== share icon for desktop ============= -->
+                                    <div class="employee-job-shareicon-frame" style="margin-left: auto;">
+                                        <!-- <div class="share_anchor shareicon-desktop dropdown" style="margin-bottom: 10px;"> -->
+                                        <div class="share_anchor shareicon-desktop dropdown" style="margin-bottom: 0px;margin-left: auto;margin-bottom: 0px !important;padding-bottom: 0px;">
+                                            <button class="share-block" data-toggle="dropdown" style="text-align:right;padding-right: 0px;position: relative;top:-5px;">
+                                                <span class="share-icon shareicon-pink imagePink"></span>
+                                                <span class="text" style="color: #9E3C6F">SHARE</span>
+                                            </button>
+                                            <div class="share-buttons-frame dropdown-menu">
+                                                <share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [show]="14" [title]="job.title" [description]="job.description"
+                                                    [url]="shareBaseUrl[i]"></share-buttons>
+                                                    <a href="mailto:?subject=Job Share&body={{job.description}} {{shareBaseUrl[i]}}" class="emailShareBtn"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                        <!-- =Employee Job Share Icon Frame End//= -->
+                                    </div>
+
+                                    <div class="cost_wrap" style="width:100%;padding-top: 12px;">
+                                        <div class="cost_and_date_of_job">
+                                            <p>Cost:
+                                                <span class="rupee_sign">
+                                                    <!-- <img src="assets/images/rupee.png"> -->
+                                                <!-- </span> {{job.buyer_cost | currency:'INR':true:'1.2-2'}} /- -->
+                                                </span> {{job.total_wage | currency:'INR':true:'1.2-2'}} {{ (job.wage_type == 'per day') ? '/ day' : (job.wage_type == 'per hour') ? '/ hour' : '/-' }}                                            
+                                            </p>
+                                            <div class="total_hour_wrap">Total Hours : {{job.total_time}} hrs</div>
+                                            <div class="total_hour_wrap">{{job.jobcost}}</div>
+                                        </div>
+                                        <div class="bids_rate_info">
+                                            <div class="first_bid" *ngFor="let bid_amount of job.bid_amount; let i = index">
+                                                <div>{{ i+1 }} Bid -
+                                                    <span class="">{{bid_amount | currency:'INR':true:'1.2-2'}}</span>
+                                                </div>
+                                                <div class="reject_bid">
+                                                    <!-- Bid rejected-->
+                                                    <span class="reject" style="color:green" *ngIf="job.bid_status[i] == 1">
+                                                        Bid Accepted
+                                                    </span>
+                                                    <span class="reject" style="color:blue" *ngIf="job.bid_status[i] == 0">
+                                                        Bid Pending
+                                                    </span>
+                                                    <span class="reject" style="color:red" *ngIf="job.bid_status[i] == 2">
+                                                        Bid Rejected
+                                                    </span>
+                                                    <span class="reject" *ngIf="job.bid_status[i] == 3">
+                                                        Job Filled
+                                                    </span>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- =========== share icon for tab ======== -->
+
+                                        <div class="share_anchor shareicon-tab dropdown">
+                                            <button class="share-block" data-toggle="dropdown">
+                                                <span class="share-icon shareicon-pink"></span>
+                                                <span class="text" style="color: #9E3C6F;">SHARE</span>
+                                            </button>
+                                            <div class="share-buttons-frame dropdown-menu">
+                                                <share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [show]="14" [title]="job.title" [description]="job.description"
+                                                    [url]="shareBaseUrl[i]"></share-buttons>
+                                                    <a href="mailto:?subject=Job Share&body={{job.description}} {{shareBaseUrl[i]}}" class="emailShareBtn"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                        <!-- ==================== end ==================== -->
+                                        <div class="d-flex message_employee_btn_wrap my_bids_btns">
+                                            <div class="btn_wrap">
+                                                <!-- <span *ngIf="">
+
+                                        </span> -->
+                                                <span class="reject" *ngIf="job.bid_status == 2">
+                                                    <span *ngIf="job.jobcost != 'non-negotiable'">
+                                                        <button class="btn-brown Job-detail-btn" (click)="getJobDetailsById(job.job_id)" data-target="#placebid" data-toggle="modal"
+                                                            data-backdrop="static">Place Bid</button>
+                                                    </span>
+                                                    <span *ngIf="job.jobcost == 'non-negotiable'">
+                                                        <button (click)="setVal(job.buyer_cost,job.job_id);" class="btn-brown Job-detail-btn">Apply</button>
+                                                    </span>
+                                                </span>
+                                                <button [routerLink]="['/viewEmployeeJob/'+job.job_id]" class="Job-detail-btn pink-btn">Job Detail</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <pagination-controls (pageChange)="p = $event" class="mobile_dis_none"></pagination-controls>
+                    </span>
+                    <span *ngIf="jobMsg !=''">
+                        <div class="job-post-description mobile_dis_none">
+                            <p class="errorMessage {{msgClass}}">{{jobMsg}}</p>
+                        </div>
+                    </span>
+
+                    <!-- ================================mobile  ====================== -->
+                    <span *ngIf="jobsArray?.length > 0">
+                        <div class="job-post-description mobile-dis-block" *ngFor="let job of jobsArray | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
+                            <div>
+                                <div class="title_wrap">
+                                    <div class="title">
+                                        <h3 class="color-pink">{{job.title}}</h3>
+                                        <span *ngIf="job.company_name!=null">
+                                            <p>{{job.company_name}}</p>
+                                        </span>
+                                        <span *ngIf="job.company_name == ''">
+                                            <p>Personal</p>
+                                        </span>
+                                    </div>
+                                    <div class="company-logo">
+                                        <img src={{job.company_logo}} alt="">
+                                    </div>
+                                </div>
+                                <div class="mobile_date_published_wrap">
+                                    <div class="date_time_title" style="flex-wrap:wrap">
+                                        <span class="date" style="flex:50%">
+                                            {{job.startdate}} to {{job.enddate}}
+                                        </span>
+                                        <span class="time" style="flex:50%">
+                                            {{job.starttime }} to {{job.endtime}}
+                                        </span>
+                                        <div class="total_hour_wrap" style="flex:100%">
+                                            {{job.total_time}} hrs
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cost_wrap">
+                                    <div class="cost_and_date_of_job A_cost_wrap_mobile">
+                                        <p>Cost:
+                                            <span class="rupee_sign">
+                                                <!-- <img src="assets/images/rupee.png"> -->
+                                            <!-- </span> {{job.buyer_cost | currency:'INR':true:'1.2-2'}} /- -->
+                                        </span> {{job.total_wage | currency:'INR':true:'1.2-2'}} {{ (job.wage_type == 'per day') ? '/ day' : (job.wage_type == 'per hour') ? '/ hour' : '/-' }}                                        
+                                        </p>
+                                        <div class="bids_rate_info">
+                                            <div class="first_bid" *ngFor="let bid_amount of job.bid_amount; let i = index">
+                                                <div>{{ i+1 }} Bid -
+                                                    <span class="">{{bid_amount | currency:'INR':true:'1.2-2'}}</span>
+                                                </div>
+                                                <div class="reject_bid">
+                                                    <!-- Bid rejected-->
+                                                    <span class="reject" style="color:green" *ngIf="job.bid_status[i] == 1">
+                                                        Bid Accepted
+                                                    </span>
+                                                    <span class="reject" style="color:blue" *ngIf="job.bid_status[i] == 0">
+                                                        Bid Pending
+                                                    </span>
+                                                    <span class="reject" style="color:red" *ngIf="job.bid_status[i] == 2">
+                                                        Bid Rejected
+                                                    </span>
+                                                    <span class="reject" *ngIf="job.bid_status[i] == 3">
+                                                        Job Filled
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-wrap-mobile pad-top-low">
+                                        <div class="share_anchor dropdown">
+                                            <button class="share-block" data-toggle="dropdown">
+                                                <span class="share-icon shareicon-pink"></span>
+                                                <span class="text">SHARE</span>
+                                            </button>
+                                            <div class="share-buttons-frame dropdown-menu" style="right: auto;left: 30px;">
+                                                <share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [show]="14" [title]="job.title" [description]="job.description"
+                                                    [url]="shareBaseUrl[i]"></share-buttons>
+                                                    <a href="mailto:?subject=Job Share&body={{job.description}} {{shareBaseUrl[i]}}" class="emailShareBtn"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="message_employee_btn_wrap youer-bid my_bids_btns">
+                                            <div class="btn_wrap d-flex">
+                                                <span class="reject" *ngIf="job.bid_status == 2">
+                                                    <span *ngIf="job.jobcost != 'non-negotiable'">
+                                                        <button class="btn-brown Job-detail-btn" (click)="getJobDetailsById(job.job_id)" data-target="#placebid" data-toggle="modal"
+                                                            data-backdrop="static">Place Bid</button>
+                                                    </span>
+                                                    <span *ngIf="job.jobcost == 'non-negotiable'">
+                                                        <button (click)="setVal(job.buyer_cost,job.job_id);" class="btn-brown Job-detail-btn">Apply</button>
+                                                    </span>
+                                                </span>
+
+                                                <button [routerLink]="['/viewEmployeeJob/'+job.job_id]" class="Job-detail-btn pink-btn">Job Detail</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<pagination-controls (pageChange)="p = $event"></pagination-controls>-->
+                    </span>
+                    <span *ngIf="jobMsg !=''">
+                        <div class="job-post-description mobile-dis-block">
+                            <p class="errorMessage {{msgClass}}">{{jobMsg}}</p>
+                        </div>
+                    </span>
+                </div>
+                <div class="col-md-12 col-lg-12 col-xl-3 ">
+                    <div class="advertisement text-center">
+                       <!--  <a href="#">
+                            <img alt="img" class="img-fluid hidden-lg-down" src="assets/images/Ad_2.png">
+                        </a>
+                        <a href="#">
+                            <img alt="img" class="img-fluid hidden-xl-up" src="assets/images/Ad.png">
+                        </a> -->
+
+                       <!-- first ads -->
+                       <ng-adsense
+                       [adClient]="'ca-pub-2201288336602886'"
+                       [adSlot]="6270830582"
+                       [display]="'inline-block'"
+                       [width]="130"
+                       [height]="50">
+                       </ng-adsense>
+                        
+                    </div>
+                </div>
+            </div>
+            <pagination-controls (pageChange)="p = $event" class="hidden-md-up"></pagination-controls>
+        </div>
+    </div>
+    <!-- mobile filters tags  -->
+    <div class="floating_filters_mobile_wrap">
+        <a href="#" data-toggle="modal" data-target="#filter_modal">
+            <img src="assets/images/filter_mobile.png">
+        </a>
+    </div>
+</div>
+
+<!-- ====================== Place Bid modal =================== -->
+
+<div class="modal userMessage fade" id="placebid" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form #bdform="ngForm" [formGroup]="bidForm" (ngSubmit)="bidForm.valid && postBidData(bidForm.value,bdform);" novalidate="false">
+
+                <div class="m-body">
+                    <label>PLACE A BID</label>
+                    <p *ngIf="(bidForm.controls['bid_value'].hasError('required') &&  bdform.submitted)" class="errorMessage error-message">*Bid amount can't be empty.</p>
+                    <p class="errorMessage {{msgClass}}" *ngIf="bidMsg!=null">{{bidMsg}}</p>
+                    <label class="bid_amount_text">Bid Amount</label>
+                    <div class="inputWrap pos-rel">
+                        <input type="text" #maxValue name="bid_value" pattern="[0-9]*" (keypress)="checkNumeric($event)" [formControl]="bidForm.controls['bid_value']">
+
+                        <!--<input type="text">-->
+                    </div>
+                </div>
+                <div class="text-right aplaceBidBtn">
+                    <input type="submit" class="blueBtn pink-btn" value="submit">
+                    <input type="button" class="blueBtn btn-brown cancle-btn" #closebidbox data-dismiss="modal" (click)="cancleForm(bdform)"
+                        value="Cancel">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ===================== end ================= -->
+
+<!-- ============================ filter modal ======================== -->
+
+<div class="modal  filter_modal fade search_filter_modal" id="filter_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body myjobPage searchJobs">
+                <div class="select_range_wrap" style="margin-bottom: 10px;">
+                    <h3 style="margin-bottom: 3px;">Select Date Range</h3>
+                    <form [formGroup]="myForm" novalidate="false" class="mybidfilterCalender">
+                        <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" (dateRangeChanged)="onDateRangeChanged($event)"
+                            [formControl]="myForm.controls['myDateRange']" class="datepicker1"></my-date-range-picker>
+                    </form>
+                    <!--<div class="date_wrap pos-rel">
+                        <input type="text">
+                        <span class="calender-icon"></span>
+                    </div>
+                    <div class="date_wrap  pos-rel">
+                        <input type="text">
+                        <span class="calender-icon"></span>
+                    </div>-->
+                </div>                
+                <h3>Filter By</h3>
+                <select class="current-job">
+                    <option>Current Bids</option>
+                </select>
+                <input type="hidden" #closeDoc id="deleteFilter" data-dismiss="modal">        
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ======================= end ==================== -->

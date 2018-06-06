@@ -1,0 +1,55 @@
+<button  class="btn" hidden="hidden" #otpOpen id="delete-node" data-toggle="modal" data-target="#otp_Modal" data-backdrop="static" ></button>
+<!--confirmMarkJobModal Model -->
+<div class="modal userMessage fade" id="otp_Modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">  
+            <div *ngIf="!isFormChange" class="m-body">
+                <form #otpfo="ngForm" [formGroup]="otpForm" (ngSubmit)="otpForm.valid && otpVarify(otpForm.value,otpfo);">
+                    <button type="button" hidden="hidden" #closeOtpModal class="close" (click)="closeForm(otpfo);" data-dismiss="modal">&times;</button>
+                    <h1 class="text-center">Verify your mobile number</h1>
+                    <br>
+                    <p class="lead" style="align:center"></p>
+                    <p> Thanks for giving your details. An OTP has been sent to your Mobile Number. Please enter the 6 digit
+                        OTP below for Successful Registration</p>                    
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <span style="color:red;"></span>
+                            <input type="text" pattern="[0-9]*" minlength="6" maxlength="6" class="form-control" [formControl]="otpForm.controls['otp']" name="otp" (keypress)="checkNumeric($event)" placeholder="Enter your OTP number">
+                            <p class="errorMessage" *ngIf="(otpForm.controls['otp'].hasError('required') && otpfo.submitted )" style="color:red">*OTP field can't be empty.</p>
+                            <p class="errorMessage" *ngIf="(otpForm.controls['otp'].hasError('pattern') && otpfo.submitted)" style="color:red">*OTP number should be only numbers.</p>
+                            <p class="errorMessage" *ngIf="(otpForm.controls['otp'].hasError('pattern') == false) && (otpForm.controls['otp'].hasError('minlength') && otpfo.submitted )"
+                                style="color:red">*OTP should be 6 digit.</p>
+                            <p class="{{msgClass}}" *ngIf="otpMessage!=''">{{otpMessage}}</p>
+                        </div>
+                        <button type="submit" class="blueBtn">Verify</button>
+                    </div>
+                    <p class="text-center creatAccountLink mb-0">
+                        <a href="#" (click)="regenerateOTP();" class="blueLink">Resend OTP</a> or <a href="#" (click)="changePhone();" class="blueLink">Change Mobile No.</a> ??
+                    </p>
+                </form>
+            </div>
+            <div *ngIf="isFormChange" class="m-body">
+                <form #changefo="ngForm" [formGroup]="changeForm" (ngSubmit)="changeForm.valid && changeMobile(changeForm.value,changefo);">
+                    <h1 class="text-center">Change mobile number</h1>
+                    <br>
+                    <p class="lead" style="align:center"></p>
+                    <p> Thanks for giving your details. A 6 digit OTP will be send to your new Mobile Number. Please do check and afterwards verify
+                        OTP for Successful Registration</p>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <span style="color:red;"></span>
+                            <input type="text" pattern="[0-9]*" minlength="10" maxlength="10" class="form-control" [formControl]="changeForm.controls['mobile']" name="mobile" (keypress)="checkNumeric($event)" placeholder="Enter your Mobile number">
+                            <p class="errorMessage" *ngIf="(changeForm.controls['mobile'].hasError('required') && changefo.submitted )" style="color:red">*Mobile number field can't be empty.</p>
+                            <p class="errorMessage" *ngIf="(changeForm.controls['mobile'].hasError('pattern') && changefo.submitted)" style="color:red">*OTP number should be only numbers.</p>
+                            <p class="errorMessage" *ngIf="(changeForm.controls['mobile'].hasError('pattern') == false) && (changeForm.controls['mobile'].hasError('minlength') && changefo.submitted )"
+                                style="color:red">*Mobile number should be 10 digit.</p>
+                            <p class="{{msgClass}}" *ngIf="changeMessage!=''">{{changeMessage}}</p>
+                        </div>
+                        <button type="submit" class="blueBtn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--confirmMarkJobModal Model -->

@@ -1,0 +1,50 @@
+<div class="form-group">
+    <label *ngIf="title">{{title}}</label>
+    <div class="input-group lossTimeOuter" (clickOutside)="onClickedOutside($event)">
+        <input type="text" class="form-control lossTimeDetail" [value]="time" [readOnly]="true" (click)="showTimePopup()">
+        <button type="button" class="input-group-addon" (click)="showTimePopup()" [attr.aria-expanded]="!isCollapsed" aria-controls="timePopup">           
+                <span class="watch-icon"></span>
+            </button>
+        <div id="timePopup" class="popupTime" [ngbCollapse]="isCollapsed">
+            <ngb-timepicker class="timePicker" [(ngModel)]="ngbTimeStruct" [meridian]="true"></ngb-timepicker>
+        </div>
+    </div>
+</div>
+<style>
+    .form-group label {
+        font-weight: bold;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+    .lossTimeDetail {
+        background: #fff;
+        border-bottom: 1px solid #ccc;
+        border-radius: 0px;
+    }
+
+    .lossTimeOuter .input-group-addon {
+        border-right: none;
+        border-radius: 0px;
+        width: 44px;
+        border: none;
+        background: #fff;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .form-group .lossTimeOuter #timePopup {
+        position: absolute;
+        top: 100%;
+        background: #fff;
+        z-index: 99;
+        border: 1px solid rgba(0, 0, 0, .15);
+        padding: 5px 20px;
+        text-align: center;
+        left: 0px;
+    }
+
+     :host ::ng-deep .ngb-tp .form-control {
+        padding: 0px;
+        width: 45px
+    }
+</style>

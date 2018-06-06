@@ -1,0 +1,14 @@
+<span *ngIf="valid != 'valid'">
+    <div style="height: 60vh;display: flex;width: 100%;align-items: center;justify-content: center;
+">
+        <p class="alert " *ngIf="msg != null" style="width: 100%;color:red;font-size:20px;text-align:center;
+">{{ msg }}</p>
+    </div>
+</span>
+<span *ngIf="valid == 'valid'">
+    <div style="height: 60vh;display: flex;width: 100%;align-items: center;justify-content: center;
+        ">
+        <p class="alert " *ngIf="msg != null" style="width: 100%;color:green;font-size:20px;text-align:center;
+        ">{{ msg }}</p>
+    </div>
+</span>

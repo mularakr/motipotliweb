@@ -1,0 +1,387 @@
+<div class="bg_grey">
+    <div class="container_1560">
+        <div class="edit_profile_wrap">
+            <form #JobEditForm="ngForm" [formGroup]="editJobForm" (ngSubmit)="editJobForm.valid && editJobData(editJobForm.value);"
+                novalidate="false">
+                <h2>Edit Job Details</h2>
+                <span class="{{msgClass}}" *ngIf="msg!=null">{{msg}}</span>                
+                <div class="edit_form_wrap">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 pad-rt-35">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 ">
+                                    <div class="form-group">
+                                        <label>Job Title</label>
+                                        <input class="form-control" type="text" name="title" [(ngModel)]="modelArray.title" [formControl]="editJobForm.controls['title']"
+                                            placeholder="">
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['title'].hasError('required') && JobEditForm.submitted)" style="color:red">*Title can't be Empty.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 ">
+                                    <div class="form-group mar-bt-0">
+                                        <label>No Of Positions</label>
+                                        <select class="form-control" [(ngModel)]="modelArray.positions" name="positions" [formControl]="editJobForm.controls['positions']">
+                                            <option value="" selected="selected">--Select position--</option>
+                                            <option *ngFor="let number of numbers" value="{{ number }}">{{ number }}</option>
+                                        </select>
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['positions'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*Positions can't be Empty.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 ">
+                                    <div class="form-group mar-bt-0 company_name_wrap pos-rel">
+                                        <label>Job Positing By</label>
+                                        <select #companySelect class="form-control" [(ngModel)]="modelArray.company_id" name="company_id" [formControl]="editJobForm.controls['company_id']"
+                                            (change)="getCompanyAddress($event.target.value)">
+                                            <option value="" selected="selected">--Select --</option>
+                                            <option *ngFor="let data of companies; let i = index;" value="{{ data.company_id }}">
+                                                {{ data.title }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 ">
+                                    <div class="form-group mar-bt-0">
+                                        <label>Category</label>
+                                        <select class="form-control" [(ngModel)]="modelArray.category_id" name="category_id" [formControl]="editJobForm.controls['category_id']">
+                                            <option value="" selected="selected">--Select--</option>
+                                            <option *ngFor="let cat of categoriesList; let i = index;" value="{{ cat.id }}">
+                                                {{ cat.name }}
+                                            </option>
+                                        </select>
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['category_id'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*Category can't be Empty.</p>                                       
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group descrition_wrap">
+                                        <label>Description</label>
+                                        <textarea class="form-control" [(ngModel)]="modelArray.description" maxlength="255" [formControl]="editJobForm.controls['description']"></textarea>
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['description'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*Description can't be Empty.</p>
+
+                                        <p class="errorMessage" style="color:red;" *ngIf="editJobForm.controls['description'].hasError('maxlength') && editJobForm.controls['description'].touched">Description maxlength should be 255.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <div class="form-group pos-rel start-date-time-wrap">
+                                                <label>Start Date</label>
+                                                <my-date-picker name="startdate" [options]="startDateOptions" [formControl]="editJobForm.controls['startdate']" (dateChanged)="onStartDateChanged($event)"></my-date-picker>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <div class="form-group start-date-time-wrap pos-rel">
+                                                <label>End Date</label>
+                                                <my-date-picker name="enddate" [options]="endDateOptions" [formControl]="editJobForm.controls['enddate']" (dateChanged)="onEndDateChanged($event)"></my-date-picker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <p class="errorMessage" *ngIf="(editJobForm.controls['startdate'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*Start Date can't be Empty.</p>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <p class="errorMessage" *ngIf="(editJobForm.controls['enddate'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*End Date can't be Empty.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group include-check-wrap">
+                                        <label>Include</label>
+                                        <div class="custm-check-box-wrap" *ngFor="let data of includeValues">
+                                            <input type="checkbox" id="{{data.weekDay}}" [checked]="isSelected(data.weekDay)" (change)="onChange(data.weekDay, $event.target.checked)"
+                                            />
+                                            <label for="{{data.weekDay}}">{{data.weekDay}}</label>
+                                        </div>
+                                    </div>
+                                </div>                               
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <div class="form-group pos-rel start-date-time-wrap">
+                                                <label class="pad-top-20-lable">Start Time</label>
+                                                <app-time-picker [defaultTime]="defaultStartTime" (timeSelected)="startTimeSelected($event, 'starttime')"></app-time-picker>
+
+                                                <p class="errorMessage" *ngIf="(editJobForm.controls['starttime'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*Start Time can't be Empty.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <div class="form-group end-time-star-time-wrap pos-rel start-date-time-wrap">
+                                                <label class="pad-top-20-lable">End Time</label>
+                                                <app-time-picker [defaultTime]="defaultendTime" (timeSelected)="startTimeSelected($event, 'endtime')"></app-time-picker>
+                                                <p class="errorMessage" *ngIf="(editJobForm.controls['endtime'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*End Time can't be Empty.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 pad-lft-35">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 ">
+                                    <div class="form-group use-company-check-wrap">
+                                        <label for="test1">Location</label>
+                                        <div class="custm-check-box-wrap">
+                                            <input #addressCheck type="checkbox" id="test1" name="addressCheck" [(ngModel)]="modelArray.addressCheck" [checked]="modelArray.addressCheck"
+                                                (change)="fillAddress($event)" [formControl]="editJobForm.controls['addressCheck']"
+                                            />
+                                            <label for="test1">Use Company Address</label>
+                                            <p class="errorMessage" style="color:red;" *ngIf="alertMsg != null">{{ alertMsg }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>Address Line 1</label>
+                                        <input #address1 [(ngModel)]="add1" class="form-control" name="address1" type="text" [formControl]="editJobForm.controls['address1']">
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['address1'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*Address can't be Empty.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>Address Line 2</label>
+                                        <input #address2 [(ngModel)]="add2" class="form-control" name="address2" type="text" [formControl]="editJobForm.controls['address2']">
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['address2'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*Address Line 2 can't be Empty.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>Pincode</label>
+                                        <input type="text" #pincode [(ngModel)]="pin" name="pincode" pattern="[0-9]*" minlength="6" maxlength="6" [formControl]="editJobForm.controls['pincode']"
+                                            class="form-control">
+
+                                        <p class="errorMessage" style="color:red;" *ngIf="editJobForm.controls['pincode'].hasError('minlength') && editJobForm.controls['pincode'].touched">pincode should be 6 digit
+                                        </p>
+                                        <p class="errorMessage" style="color:red;" *ngIf="editJobForm.controls['pincode'].hasError('pattern') && editJobForm.controls['pincode'].touched">pincode should be only numbers
+                                        </p>
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['pincode'].hasError('required') &&  JobEditForm.submitted)" style="color:red">Pincode can't be empty</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+
+                                    <div class="form-group mar-bt-0">
+                                        <label>State</label>
+                                        <select class="form-control" name="state_id" [(ngModel)]="modelArray.state_id" [formControl]="editJobForm.controls['state_id']"
+                                            (change)="onSelect($event.target.value)">
+                                            <option value="" selected="selected">--State--</option>
+                                            <option *ngFor="let data of statesArray; let i = index;" value="{{ data.id }}">
+                                                {{ data.name }}
+                                            </option>
+                                        </select>
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['state_id'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*State can't be Empty.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group mar-bt-0">
+                                        <label>City</label>
+                                        <select class="form-control" name="city_id" [(ngModel)]="modelArray.city_id" [formControl]="editJobForm.controls['city_id']">
+                                            <option value="" selected="selected">--City--</option>
+                                            <option *ngFor="let cityData of citiesArray" value="{{cityData.id}}">{{cityData.city}}</option>
+                                        </select>
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['city_id'].hasError('required') && JobEditForm.submitted)" style="color:red">*City can't be Empty.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group job-cost-wrap">
+                                        <label>Job Cost</label>
+                                        <div class="field radio_part">
+                                            <div>
+                                                <input name="jobcost" (click)="setDisabled(false)" [(ngModel)]="modelArray.jobcost" value="negotiable" id="emp" type="radio"
+                                                    [formControl]="editJobForm.controls['jobcost']">
+                                                <label for="emp">Negotiable</label>
+                                            </div>
+                                            <div>
+                                                <input name="jobcost" (click)="setDisabled(true)" [(ngModel)]="modelArray.jobcost" value="non-negotiable" id="emp1" type="radio"
+                                                    [formControl]="editJobForm.controls['jobcost']">
+                                                <label for="emp1"> Non-Negotiable</label>
+                                            </div>
+                                            <p class="errorMessage" *ngIf="(editJobForm.controls['jobcost'].hasError('required') && JobEditForm.submitted )" style="color:red">*Job Cost cant't be empty</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-5 col-9">
+                                            <div class="form-group">
+                                                <label class="pad-top-20-lable">Wages</label>
+                                                <input #buyercost (blur)="checkMaxCost($event)" class="form-control" [(ngModel)]="modelArray.buyer_cost" type="text" name="buyer_cost"
+                                                    pattern="[0-9]*" [formControl]="editJobForm.controls['buyer_cost']" (keyup)="wageCalculate($event)" (keypress)="checkNumeric($event)"
+                                                    placeholder="">
+                                                <p class="errorMessage" *ngIf="(editJobForm.controls['buyer_cost'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*Buyer Cost can't be Empty.</p>
+                                                <p class="errorMessage" style="color:red;" *ngIf="buyerCostMsg != null">{{ buyerCostMsg }}</p>                                             
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-5 col-9">
+                                            <div class="form-group">
+                                                <label class="pad-top-20-lable"></label>
+                                                
+                                                <select class="form-control wage" [(ngModel)]="modelArray.buyer_wage" (change)="wageCalculate($event)" name="buyer_wage" [formControl]="editJobForm.controls['buyer_wage']">
+                                                    <option *ngFor="let wage of buyer_wageAr" value="{{wage}}">{{wage}}</option>
+                                                </select>
+                                                <p class="errorMessage" *ngIf="(editJobForm.controls['buyer_wage'].hasError('required') && JobEditForm.submitted)" style="color:red">*Buyer wage can't be Empty.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-5 col-md-7 col-9">
+                                            <div class="form-group">
+                                                <label class="pad-top-20-lable">Total Wages </label>
+                                                <input type="text" [(ngModel)]="modelArray.total_wage" name="totalWage" [formControl]="editJobForm.controls['totalWage']" placeholder="" readonly>
+                                                <p class="errorMessage" *ngIf="(editJobForm.controls['totalWage'].hasError('required') && JobEditForm.submitted)" style="color:red">*Please adjust the total wages.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-5 col-md-7 col-9">
+                                            <div class="form-group">
+                                                <label class="pad-top-20-lable">Max Allowed Bid Cost</label>
+                                                <input class="form-control" #maxcost pattern="[0-9]*" type="text" [(ngModel)]="modelArray.allowbid_cost" name="allowbid_cost"
+                                                    (keypress)="checkNumeric($event)" [formControl]="editJobForm.controls['allowbid_cost']"
+                                                    placeholder="">
+                                                <p class="errorMessage" *ngIf="(editJobForm.controls['allowbid_cost'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*allow bid Cost can't be Empty.</p>
+                                                <p class="errorMessage" style="color:red;" *ngIf="maxCostMsg != null">{{ maxCostMsg }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row hidden-md-up">
+                        <!-- ============ID Proof Required for tab ============= -->
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label>ID Proof Required</label>
+                                <div class="custm-check-box-wrap ">
+                                    <input type="checkbox" id="Checkbox1" name="idproof" [(ngModel)]="modelArray.idproof" [checked]="modelArray.idproof" [formControl]="editJobForm.controls['idproof']"
+                                    />
+                                    <label for="Checkbox1">Checkbox</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- =================== end ============= -->
+                        <!-- =================== Allowable Maximum Bids for tab ======== -->
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group mar-bt-0">
+                            </div>
+                        </div>
+                        <!-- =================== end ============= -->
+                        <!-- =================== Allowable Maximum Bids for tab ======== -->
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group mar-bt-0">
+                                <label>Allowable Maximum Bids</label>
+                                <select class="form-control" name="allowbids" [formControl]="editJobForm.controls['allowbids']" [(ngModel)]="modelArray.allowbids">
+                                    <option value="" selected="selected">--Select--</option>
+                                    <option *ngFor="let number of numbers" value="{{ number }}">{{ number }}</option>
+                                </select>
+                                <p class="errorMessage" *ngIf="(editJobForm.controls['allowbids'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*allowbids can't be Empty.</p>
+                            </div>
+                        </div>
+                        <!-- ====================end ==================                      -->
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 pad-rt-35 mobile_order_50">
+                            <!--<input class="upload"  name="fileInput" #fileInput type="file" multiple>-->
+                            <div class="form-group upload-btn">
+                                <label>Upload Your Files</label>
+                                <div class="upload-btn-wrapper">
+                                    <button>
+                                        <img src="assets/images/upload_file.png" alt="">
+                                    </button>
+                                    <input class="upload" (change)="fileChange($event, profileImage)" name="fileInput" #fileInput id="file1" type="file" multiple accept=".png, .jpg, .jpeg, .gif">
+                                    <p class="errorMessage" *ngIf="(editJobForm.controls['fileInput'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*file can't be Empty.</p>
+                                    <label for="file1">
+                                        <img src="assets/images/plus.png" alt="" class="plus-btn">
+                                    </label>
+                                </div>
+                                <!--Display Image-->
+                                <div #profileImage id="imageWrap" class="multipleImageWrap">
+
+                                </div>
+                                
+                                <div class="clearfix">
+                                    <span *ngIf="imageArray !==''">                                   
+                                    <div *ngFor="let dataImage of imageArray; let i = index;" class="multipleImageWrap clearfix" style="width:100px;float:left;position:relative;margin-right:20px;">
+                                        <img src="{{dataImage.images}}" alt="" class="plus-btn">
+                                        
+                                        <img src="assets/images/delete.png" alt="" (click)="setDeleteImageVal(dataImage.id,i)" class="plus-btn" data-toggle="modal" data-target="#deleteImageModal" data-backdrop="static" style="position:absolute;right:-20px;bottom:-9px;height:24px;width:24px;">
+
+                                        <!-- <img src="assets/images/delete.png" alt="" (click)="deleteImage(dataImage.id,i)" class="plus-btn " style="position:absolute;right:-20px;bottom:-9px;height:24px;width:24px;">                                       -->
+                                    </div>
+                                    </span>
+                                    
+                                </div>
+                                <p class="errorMessage {{msgClass}}" *ngIf="maxImageError !=''">{{maxImageError}}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 pad-lft-35 hidden-md-down">
+                            <div class="row">
+                                <!-- ============ID Proof Required for desktop ============= -->
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <label>ID Proof Required</label>
+                                        <div class="custm-check-box-wrap ">                                          
+                                            <input type="checkbox" id="Checkbox" name="idproof" [(ngModel)]="modelArray.idproof" [checked]="modelArray.idproof" [formControl]="editJobForm.controls['idproof']"
+                                            />
+                                            <label for="Checkbox">Checkbox</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- =================== end ============= -->
+                                <!-- ============Allowable Maximum Bids for desktop ============= -->
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group mar-bt-0">
+                                        <label>Allowable Maximum Bids</label>
+                                        <select class="form-control" name="allowbids" [formControl]="editJobForm.controls['allowbids']" [(ngModel)]="modelArray.allowbids">
+                                            <option value="" selected="selected">--Select--</option>
+                                            <option *ngFor="let number of numbers" value="{{ number }}">{{ number }}</option>
+                                        </select>
+                                        <p class="errorMessage" *ngIf="(editJobForm.controls['allowbids'].hasError('required') &&  JobEditForm.submitted)" style="color:red">*allowbids can't be Empty.</p>
+                                    </div>
+                                </div>
+                                <!-- =========================end==================-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cancel_submit_btn_wrap text-right">
+                    <button class="cancelBtn" (click)="cancelJobPost()">Cancel</button>
+                    <button class="submitBtn" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--deleteImageModal Model -->
+<div class="modal userMessage fade" id="deleteImageModal" #deleteImageModal tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="m-body">
+                <label>Alert</label>             
+                <p>Are you sure you want to delete this image?</p>                  
+            </div>
+            <div class="text-right">                  
+                <button class="blueBtn" (click)="deleteImage('true')">Ok</button>
+                <button class="greyBtn" #closeImageBtn id="delete-node" (click)="deleteImage('false')" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--deleteImageModal Model -->

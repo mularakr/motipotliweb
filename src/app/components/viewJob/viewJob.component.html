@@ -1,0 +1,452 @@
+<span *ngIf="open == 'open'">
+		<section class="bg_grey">
+			<div class="JobDetailSec a_myjob">
+				<div class="container_1560">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
+							<span *ngIf="jobs!=null">
+								<div class="requestDiv">
+									<div class="HeadWrapper">
+										<div class="requestHead">
+											<h3 class="gapResponsive">{{jobs.title}}</h3>
+											<h4>{{jobs.company_name}}</h4>
+										</div>
+										<div class="middleDiv">
+											<span>Cost:</span>
+											<span class="">{{jobs.total_wage | currency:'INR':true:'1.2-2'}}</span>
+										</div>
+										<div class="logoRt">
+											<img alt="" src={{jobs.company_logo}} class="img-fluid">
+										</div>
+									</div>
+									<div class="requestDetails">
+										<p class="Description">
+											<span class="Label">Job Description :</span> {{jobs.description}}
+										</p>
+										<div class="middleFlex">
+											<div class="categoryDiv">
+												<span class="Label">Category :</span> {{jobs.category_name}}
+											</div>
+											<div class="midDiv">
+												{{jobs.startdate}} to {{jobs.enddate}}
+												<!--20, Aug to 22, Aug-->
+											</div>
+											<div class="midDiv">
+												{{jobs.stime}} to {{jobs.etime}}
+											</div>
+											<div class="midDiv timeDiv">
+												<span class="timeSpan">Total Hours : {{jobs.total_time}} hrs</span>
+											</div>
+											<div class="shareDiv">
+												<div class="share_anchor dropdown" style="width: auto;">
+													<button class="share-block" data-toggle="dropdown">
+													<span class="share-icon"></span>
+													<span class="txtShare">Share</span>
+													</button>
+													<div class="share-buttons-frame dropdown-menu">
+														<share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [show]="14" [title]="jobs.title" [description]="jobs.description"
+														[url]="shareBaseUrl"></share-buttons>
+														<a href="mailto:?subject=Job Share&body={{jobs.description}} {{shareBaseUrl}}" class="emailShareBtn">
+														<i class="fa fa-envelope-o" aria-hidden="true"></i>
+														</a>
+													</div>
+													<!-- =Share Button Frame End//= -->
+												</div>
+												<!-- =Share Anchor End//= -->
+											</div>
+											<!-- =Share Div End//= -->
+											<div class="LocationDiv">
+												<span class="Label">Location:</span> {{jobs.address1}} {{jobs.address2}} {{jobs.city}}, {{jobs.state}}, {{jobs.pincode}}
+											</div>
+										</div>
+										<div class="text-right btn-editjob-frame">
+											<span *ngIf="jobs.acceptBidStatus == '0'">
+											<button [routerLink]="['/editJob/'+jobs.job_id]" class="editBtn">
+											<span></span> Edit Job</button>
+											</span>
+										</div>
+									</div>
+								</div>
+							</span>
+							<div class="employeeDetailDiv">
+								<h3 class="blackHead">Selected Employee Details</h3>
+								<span *ngIf="acceptBidDetails!= null">
+									<div class="row borderBtm" *ngFor="let acceptBid of acceptBidDetails; let i = index">
+										<div class="col-md-8">
+											<div class="row">
+												<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 empOrder">
+													<p>
+														<span class="Label">Employee Name :</span>
+														<span class="empValue">
+														<a [routerLink]="['/viewEmp/'+acceptBid.employee_id+'-'+acceptBid.job_id]" class="edit_job">
+														<span></span>{{acceptBid.employee_name}}</a>
+														</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 compOrder">
+													<p>
+														<span class="Label">Company Name :</span>
+														<span class="empValue">{{acceptBid.company_name}}</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 phoneOrder">
+													<p>
+														<span class="Label">Phone Number :</span>
+														<span class="empValue">{{acceptBid.employee_phone}}</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 addOrder">
+													<p>
+														<span class="Label">Address :</span>
+														<span class="empValue">{{acceptBid.employee_address}}</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 emailOrder">
+													<p class="emailwrap">
+														<span class="Label">E-mail :</span>
+														<span class="empValue">{{acceptBid.employee_email}}</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 amountOrder">
+													<p>
+														<span class="Label">Bid Amount :</span>
+														<span class="empValue">{{acceptBid.bid_amount | currency:'INR':true:'1.2-2'}} /-</span>
+													</p>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="row">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<div class="progressDiv p20 blue">
+														<span class="progress-left">
+														<span class="progress-bar 
+															{{ 
+															(acceptBid.employee_rating == 0 ) ? 'progress-bar-0' :
+															(acceptBid.employee_rating > 0 && acceptBid.employee_rating <= 25 ) ? '' : 
+															(acceptBid.employee_rating > 25 && acceptBid.employee_rating <= 50 ) ? '' : 
+															(acceptBid.employee_rating > 50 && acceptBid.employee_rating <= 75 ) ? 'progress-bar-90' : 
+															(acceptBid.employee_rating > 75 && acceptBid.employee_rating <= 100 ) ? 'progress-bar-180' : '' 
+															}} 
+															"></span>
+														</span>
+														<span class="progress-right">
+														<span class="progress-bar 													
+															{{ 
+															(acceptBid.employee_rating == 0 ) ? 'progress-bar-0' : 
+															(acceptBid.employee_rating > 0 && acceptBid.employee_rating <= 25 ) ? 'progress-bar-90' : 
+															(acceptBid.employee_rating > 25 && acceptBid.employee_rating <= 50 ) ? 'progress-bar-180' : 
+															(acceptBid.employee_rating > 50 && acceptBid.employee_rating <= 75 ) ? 'progress-bar-180' : 
+															(acceptBid.employee_rating > 75 && acceptBid.employee_rating <= 100 ) ? 'progress-bar-180' : '' 
+															}} "></span>
+														</span>
+														<div class="progress-value">{{acceptBid.employee_rating}}%</div>
+													</div>
+													<span class="rating">{{acceptBid.employee_rating}} Ratings</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</span>
+								<span *ngIf="acceptBidDetails == null">
+									<p class="errorMessage {{msgClass}}">{{msg}}</p>
+								</span>
+							</div>
+							<div class="bidDetailDiv">
+								<h3 class="blackHead">Bid Received</h3>
+								<span *ngIf="bidDetails?.length > 0">
+									<div class="borderBtm" #bidDiv *ngFor="let bid of bidDetails; let i = index">
+										<div class="row">
+											<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+												<p>
+													<span class="Label">Employee Name :</span>
+													<span class="empValue">
+													<a [routerLink]="['/viewEmp/'+bid.employee_id+'-'+bid.job_id]" class="edit_job">
+													{{bid.employee_name}}</a>
+													</span>
+												</p>
+											</div>
+											<div class="col-xs-12 col-sm-6 col-md-8 col-lg-3  bidOrder1">
+												<p>
+													<span class="Label">Bid Amount :</span>
+													<span class="empValue">{{bid.bid_amount | currency:'INR':true:'1.2-2'}} /-</span>
+												</p>
+											</div>
+											<div class="col-xs-12 col-sm-6 col-md-8 col-lg-4 order10">
+												<p>
+													<span class="Label">Company Name :</span>
+													<span class="empValue">{{bid.company_name}}</span>
+												</p>
+											</div>
+											<div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+												<p>
+													<span class="Label">Bid :</span>
+													<span class="empValue">{{bid.bid_attempt}} Bid</span>
+												</p>
+											</div>
+											<span *ngIf="bid.last_bid_amount != ''">
+												<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 bidOrder2">
+													<p>
+														<span class="Label">Last Bid Amount:</span>
+														<span class="empValue">{{bid.last_bid_amount | currency:'INR':true:'1.2-2'}} /-</span>
+													</p>
+												</div>
+											</span>
+										</div>
+										<div class="row marginTopRow">
+											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+												<div class="progressDiv p20 blue">
+													<span class="progress-left">
+													<span class="progress-bar 
+														{{ 
+														(bid.employee_rating == 0 ) ? 'progress-bar-0' :
+														(bid.employee_rating > 0 && bid.employee_rating <= 25 ) ? '' : 
+														(bid.employee_rating > 25 && bid.employee_rating <= 50 ) ? '' : 
+														(bid.employee_rating > 50 && bid.employee_rating <= 75 ) ? 'progress-bar-90' : 
+														(bid.employee_rating > 75 && bid.employee_rating <= 100 ) ? 'progress-bar-180' : '' 
+														}} 
+														"></span>
+													</span>
+													<span class="progress-right">
+													<span class="progress-bar 													
+														{{ 
+														(bid.employee_rating == 0 ) ? 'progress-bar-0' : 
+														(bid.employee_rating > 0 && bid.employee_rating <= 25 ) ? 'progress-bar-90' : 
+														(bid.employee_rating > 25 && bid.employee_rating <= 50 ) ? 'progress-bar-180' : 
+														(bid.employee_rating > 50 && bid.employee_rating <= 75 ) ? 'progress-bar-180' : 
+														(bid.employee_rating > 75 && bid.employee_rating <= 100 ) ? 'progress-bar-180' : '' 
+														}} "></span>
+													</span>
+													<div class="progress-value">{{bid.employee_rating}}%</div>
+												</div>
+												<span class="rating">{{bid.employee_rating}} Ratings</span>
+											</div>
+											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-right">
+												<button class="greyBtn" data-toggle="modal" (click)="setVal(bid.employee_id,bid.job_id,bid.bid_id,i);" data-target="#myModal1">Reject</button>
+												<button class="blueBtn" (click)="setVal(bid.employee_id,bid.job_id,bid.bid_id,i);" data-toggle="modal" data-target="#myModal">Accept</button>
+											</div>
+										</div>
+									</div>
+								</span>
+								<span *ngIf="bidMsg!=null">
+									<p class="errorMessage {{msgClass}}">{{bidMsg}}</p>
+								</span>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+							<div class="advertisement text-center">
+								<!-- first ads -->
+								<ng-adsense [adClient]="'ca-pub-2201288336602886'" [adSlot]="6270830582" [display]="'inline-block'" [width]="130" [height]="50">
+								</ng-adsense>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- ====================== message modal =================== -->
+		<!--Appect Model -->
+		<div class="modal userMessage fade" id="myModal" #myModal tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="m-body">
+						<label>Message to employee</label>
+						<p class="errorMessage {{msgClass}}" *ngIf="msgErr!=null">{{msgErr}}</p>
+						<p class="errorMessage {{msgFinalClass}}" *ngIf="bidfinalmsg!=null">{{bidfinalmsg}}</p>
+						<div class="textWrap">
+							<textarea #bidMessage placeholder="Type Your Message"></textarea>
+						</div>
+					</div>
+					<div class="text-right">
+						<button class="blueBtn" (click)="bidAcceptReject(bidMessage.value, 'accept');">Accept BID</button>
+						<button class="greyBtn" #closeBtn id="delete-node" (click)="cancleBidModel('accept');" data-dismiss="modal">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Reject model-->
+		<div class="modal userMessage fade" id="myModal1" #myModal tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="m-body">
+						<label>Message to employee</label>
+						<p class="errorMessage {{msgClass}}" *ngIf="msgErr!=null">{{msgErr}}</p>
+						<p class="errorMessage {{msgClass}}" *ngIf="bidfinalmsg!=null">{{bidfinalmsg}}</p>
+						<div class="textWrap">
+							<textarea #rejectMessage placeholder="Type Your Message"></textarea>
+						</div>
+					</div>
+					<div class="text-right">
+						<button class="blueBtn" (click)="bidAcceptReject(rejectMessage.value, 'reject');">Reject BID</button>
+						<button class="greyBtn" #closeBtn1 id="delet-enode" (click)="cancleBidModel1('reject');" data-dismiss="modal">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</span>
+	<span *ngIf="open =='booked'">
+		<section class="bg_grey">
+			<div class="JobDetailSec a_myjob">
+				<div class="container_1560">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
+							<span *ngIf="jobs!=null">
+								<div class="requestDiv">
+									<div class="HeadWrapper">
+										<div class="requestHead">
+											<h3>{{jobs.title}}</h3>
+											<h4>{{jobs.company_name}}</h4>
+										</div>
+										<div class="middleDiv">
+											<span>Cost:</span>
+											<span class="">{{jobs.total_wage | currency:'INR':true:'1.2-2'}}</span>
+										</div>
+										<div class="logoRt">
+											<img alt="" src={{jobs.company_logo}} class="img-fluid">
+										</div>
+									</div>
+									<div class="requestDetails">
+										<p class="Description">
+											<span class="Label">Job Description :</span> {{jobs.description}}
+										</p>
+										<div class="middleFlex">
+											<div class="categoryDiv">
+												<span class="Label">Category :</span> {{jobs.category_name}}
+											</div>
+											<div class="midDiv">
+												{{jobs.startdate}} to {{jobs.enddate}}
+												<!--20, Aug to 22, Aug-->
+											</div>
+											<div class="midDiv">
+												{{jobs.stime}} to {{jobs.etime}}
+											</div>
+											<div class="midDiv timeDiv">
+												<span class="timeSpan">Total Hours : {{jobs.total_time}} hrs</span>
+											</div>
+											<div class="shareDiv ShareIconViewJob">
+												<div class="share_anchor dropdown">
+													<button class="share-block" data-toggle="dropdown">
+													<span class="share-icon"></span>
+													<span class="txtShare hidden-sm-down">Share</span>
+													</button>
+													<div class="share-buttons-frame dropdown-menu" *ngIf="frameShowHide===i">
+														<share-buttons [theme]="'default'" [include]="['facebook','twitter','google']" [show]="14" [title]="jobs.title" [description]="jobs.description"
+														[url]="shareBaseUrl"></share-buttons>
+														<a href="mailto:?subject=Job Share&body={{jobs.description}} {{shareBaseUrl}}" class="emailShareBtn">
+														<i class="fa fa-envelope-o" aria-hidden="true"></i>
+														</a>
+													</div>
+												</div>
+												<!-- =Share Anchor End//= -->
+											</div>
+											<!-- =Share Div End//= -->
+											<div class="LocationDiv">
+												<span class="Label">Location:</span> {{jobs.address1}} {{jobs.address2}} {{jobs.city}}, {{jobs.state}}, {{jobs.pincode}}
+											</div>
+										</div>
+										<div class="text-right">
+											<span *ngIf="jobs.acceptBidStatus == '0'">
+											<button [routerLink]="['/editJob/'+jobs.job_id]" class="editBtn">
+											<span></span> Edit Job</button>
+											</span>
+										</div>
+									</div>
+								</div>
+							</span>
+							<div class="employeeDetailDiv">
+								<h3 class="blackHead">Selected Employee Details</h3>
+								<span *ngIf="acceptBidDetails!= null">
+									<div class="row borderBtm" *ngFor="let acceptBid of acceptBidDetails; let i = index">
+										<div class="col-md-8">
+											<div class="row">
+												<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 empOrder">
+													<p>
+														<span class="Label">Employee Name :</span>
+														<span class="empValue">
+														<a [routerLink]="['/viewEmp/'+acceptBid.employee_id]" class="edit_job">
+														<span></span>{{acceptBid.employee_name}}</a>
+														</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 compOrder">
+													<p>
+														<span class="Label">Company Name :</span>
+														<span class="empValue">{{acceptBid.company_name}}</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 phoneOrder">
+													<p>
+														<span class="Label">Phone Number :</span>
+														<span class="empValue">{{acceptBid.employee_phone}}</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 addOrder">
+													<p>
+														<span class="Label">Address :</span>
+														<span class="empValue">{{acceptBid.employee_address}}</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 emailOrder">
+													<p class="emailwrap">
+														<span class="Label">E-mail :</span>
+														<span class="empValue">{{acceptBid.employee_email}}</span>
+													</p>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 amountOrder">
+													<p>
+														<span class="Label">Bid Amount:</span>
+														<span class="empValue">{{acceptBid.bid_amount | currency:'INR':true:'1.2-2'}} /-</span>
+													</p>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="row">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<div class="progressDiv p20 blue">
+														<span class="progress-left">
+														<span class="progress-bar 
+															{{ 
+															(acceptBid.employee_rating == 0 ) ? 'progress-bar-0' :
+															(acceptBid.employee_rating > 0 && acceptBid.employee_rating <= 25 ) ? '' : 
+															(acceptBid.employee_rating > 25 && acceptBid.employee_rating <= 50 ) ? '' : 
+															(acceptBid.employee_rating > 50 && acceptBid.employee_rating <= 75 ) ? 'progress-bar-90' : 
+															(acceptBid.employee_rating > 75 && acceptBid.employee_rating <= 100 ) ? 'progress-bar-180' : '' 
+															}} 
+															"></span>
+														</span>
+														<span class="progress-right">
+														<span class="progress-bar 													
+															{{ 
+															(acceptBid.employee_rating == 0 ) ? 'progress-bar-0' : 
+															(acceptBid.employee_rating > 0 && acceptBid.employee_rating <= 25 ) ? 'progress-bar-90' : 
+															(acceptBid.employee_rating > 25 && acceptBid.employee_rating <= 50 ) ? 'progress-bar-180' : 
+															(acceptBid.employee_rating > 50 && acceptBid.employee_rating <= 75 ) ? 'progress-bar-180' : 
+															(acceptBid.employee_rating > 75 && acceptBid.employee_rating <= 100 ) ? 'progress-bar-180' : '' 
+															}} "></span>
+														</span>
+														<div class="progress-value">{{acceptBid.employee_rating}}%</div>
+													</div>
+													<span class="rating">{{acceptBid.employee_rating}} Ratings</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</span>
+								<span *ngIf="acceptBidDetails == null">
+									<p class="errorMessage {{msgClass}}">{{msg}}</p>
+								</span>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+							<div class="advertisement text-center">
+								<!-- first ads -->
+								<ng-adsense [adClient]="'ca-pub-2201288336602886'" [adSlot]="6270830582" [display]="'inline-block'" [width]="130" [height]="50">
+								</ng-adsense>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</span>

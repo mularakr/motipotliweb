@@ -1,0 +1,213 @@
+<div class="bg_grey">
+    <div class="container_1560">
+        <div class="changePasswordSection saved-card-wrap myCompanies-wrap">
+            <h5 class="">My Companies</h5>
+            <span class="{{msgClass}}" *ngIf="delMsg!=null">{{delMsg}}</span>
+                        
+                <div class="saved_card_detail" *ngFor="let company of companies;let i = index">
+                    <span>{{company.title}}</span>
+                    <div class="edit_delete_wrap">
+                            <a  (click)="getCompanyData(company.company_id)">EDIT</a>
+                            <a  (click)="setDeleteCompanyVal(company.company_id,i)" data-toggle="modal" data-target="#deleteCompanyModal" data-backdrop="static">DELETE</a>
+                    </div>
+                </div>
+            <span class="{{msgClass}}" *ngIf="noRecord !=null">{{noRecord}}</span>
+        </div>
+        <form #f="ngForm" [formGroup]="companyForm" (ngSubmit)="companyForm.valid && addCompanyData(companyForm.value,f)" novalidate="false">
+            <div class="edit_profile_wrap">
+                <span *ngIf="checkTitle==true">
+                    <h2>Edit Company : {{modelArray.title}}</h2>
+                </span>
+                <span *ngIf="checkTitle!=true">
+                    <h2>Add Company</h2>
+                </span>
+                <span class="{{msgClass}}" *ngIf="msg!=null">{{msg}}</span>
+                <div class="edit_form_wrap">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 pad-rt-35">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 ">
+                                    <div class="form-group">
+                                        <label>Company Name</label>
+                                        <input class="form-control" [(ngModel)]="modelArray.title" type="text" name="title" [formControl]="companyForm.controls['title']"
+                                            placeholder="">
+                                        <input class="form-control" [(ngModel)]="modelArray.companyId" type="hidden" name="companyId" [formControl]="companyForm.controls['companyId']"
+                                            placeholder="Title">
+                                        <p class="errorMessage" *ngIf="(companyForm.controls['title'].hasError('required') && f.submitted)" style="color:red">*Title can't be Empty.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 ">
+                                    <div class="form-group">
+                                        <label>Bio</label>
+                                        <textarea class="form-control" name="title" [(ngModel)]="modelArray.bio" maxlength="255" [formControl]="companyForm.controls['bio']"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 ">
+                                    <div class="form-group mar-bt-0">
+                                        <label>State</label>
+                                        <select class="form-control" [(ngModel)]="modelArray.state_id" name="state_id" [formControl]="companyForm.controls['state_id']"
+                                            (change)="onSelect($event.target.value)">
+                                            <option value="" selected="selected">--State--</option>
+                                            <option *ngFor="let data of states; let i = index;" value="{{ data.id }}">
+                                                {{ data.name }}
+                                            </option>
+                                        </select>
+                                        <p class="errorMessage" *ngIf="(companyForm.controls['state_id'].hasError('required') &&  f.submitted)" style="color:red">*State can't be Empty.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 ">
+                                    <div class="form-group">
+                                        <label>Phone Number</label>
+                                        <input class="form-control" [(ngModel)]="modelArray.phone" pattern="[0-9]*" minlength="10" maxlength="10" (keypress)="checkNumeric($event)"
+                                            type="text" name="phone" [formControl]="companyForm.controls['phone']">
+                                        <p class="errorMessage" *ngIf=" (companyForm.controls['phone'].hasError('required') && f.submitted )" style="color:red">*Phone can't be Empty.</p>
+                                        <p class="errorMessage" *ngIf="(companyForm.controls['phone'].hasError('pattern') && f.submitted)" style="color:red">*Phone number should be only numbers.</p>
+                                        <p class="errorMessage" *ngIf="(companyForm.controls['phone'].hasError('pattern') == false) && (companyForm.controls['phone'].hasError('minlength') && f.submitted )"
+                                            style="color:red">*Mobile should be 10digit.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 pad-lft-35">
+                            <div class="col-lg-12 col-md-12 ">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 pad-lft-rt-0">
+                                        <div class="form-group">
+                                            <label>Address Line 1</label>
+                                            <input class="form-control" [(ngModel)]="modelArray.address1" type="text" name="address1" [formControl]="companyForm.controls['address1']">
+                                            <p class="errorMessage" *ngIf="(companyForm.controls['address1'].hasError('required') &&  f.submitted)" style="color:red">*Address can't be Empty.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 pad-lft-rt-0">
+                                        <div class="form-group">
+                                            <label>Address Line 2</label>
+                                            <input class="form-control" [(ngModel)]="modelArray.address2" type="text" name="address2" [formControl]="companyForm.controls['address2']">
+                                            <p class="errorMessage" *ngIf="(companyForm.controls['address2'].hasError('required') &&  f.submitted)" style="color:red">*address line 2 can't be Empty.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 pad-lft-rt-0">
+                                        <div class="form-group mar-bt-0">
+                                            <label>City</label>
+                                            <select class="form-control" [(ngModel)]="modelArray.city_id" name="city_id" [formControl]="companyForm.controls['city_id']">
+                                                <option value="" selected="selected">--City--</option>
+                                                <option *ngFor="let cityData of cities; let i = index;" value="{{ cityData.id }}">
+                                                    {{ cityData.city }}
+                                                </option>
+                                            </select>
+                                            <p class="errorMessage" *ngIf="(companyForm.controls['city_id'].hasError('required') &&  f.submitted)" style="color:red">*City can't be Empty.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 pad-lft-rt-0">
+                                        <div class="form-group">
+                                            <label>Pincode</label>
+                                            <input class="form-control" [(ngModel)]="modelArray.pincode" pattern="[0-9]*" minlength="6" maxlength="6" type="text" name="pincode"
+                                                [formControl]="companyForm.controls['pincode']">
+                                            <p class="errorMessage" style="color:red;" *ngIf="companyForm.controls['pincode'].hasError('minlength') && companyForm.controls['pincode'].touched">pincode should be 6 digit
+                                            </p>
+                                            <p class="errorMessage" style="color:red;" *ngIf="companyForm.controls['pincode'].hasError('pattern') && companyForm.controls['pincode'].touched">pincode should be only numbers
+                                            </p>
+                                            <p class="errorMessage" *ngIf="(companyForm.controls['pincode'].hasError('required') &&  f.submitted)" style="color:red">Pincode can't be empty</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6  pad-rt-35 ">
+                            <div class="form-group upload-btn">
+                                <label>Upload Company Logo</label>
+                                <div class="upload-btn-wrapper upload-compnay-logo">
+                                    <button>
+                                        <img src="assets/images/photoimg.png" alt="">
+                                    </button>
+                                    <input class="upload" (change)="logoChange($event, logoFile)" name="fileInput" #fileInput type="file" id="file-input" accept=".png, .jpg, .jpeg, .gif">
+                                    <label for="file-input">
+                                        <img src="assets/images/plus.png" alt="" class="plus-btn">
+                                    </label>
+                                </div>
+                                <div #logoFile class="multipleImageWrap">
+                                </div>
+                                <p class="{{msgClass}}" *ngIf="imageMsg != ''">{{imageMsg}}</p>                         
+                                 <div #file class="multipleImageWrap" *ngIf="company_logo!=null">
+                                    <img src="{{company_logo}}">
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 mobile_order_50 pad-lft-35 pad-lft-rt-0">
+                            <div class="form-group upload-btn">
+                                <label> Upload Company Documents </label>
+                                <div class="upload-btn-wrapper">
+                                    <button>
+                                        <img src="assets/images/upload_file.png" alt="">
+                                    </button>
+                                    <input type="file" id="file-input2" name="companyDoc" #companyDoc (change)="addCompanyDocuments($event, documentFile)" multiple/>
+                                    <label for="file-input2">
+                                        <img src="assets/images/plus.png" alt="" class="plus-btn">
+                                    </label>
+                                </div>
+                                <div #documentFile class="multipleImageWrap">
+
+                                </div>
+                                <div #listDoc class="clearfix">
+                                    <span *ngIf="imageArray !=''">
+                                            <div *ngFor="let dataImage of imageArray; let i = index;" class="multipleImageWrap clearfix" style="width:100px;float:left;position:relative;margin-right:20px;">
+                                            <span *ngIf="dataImage.ext == 'image'">
+                                                <img src="{{dataImage.images}}" alt="" class="plus-btn">
+                                                <img src="assets/images/delete.png" alt="" (click)="setDeleteImageVal(dataImage.id,i)" class="plus-btn" data-toggle="modal" data-target="#deleteImageModal" data-backdrop="static" style="position:absolute;right:-20px;bottom:-9px;height:24px;width:24px;">    
+                                            </span>
+                                            <span *ngIf="dataImage.ext == 'doc'">
+                                                <img src="assets/images/doc.png" alt="" class="plus-btn">
+                                                <img src="assets/images/delete.png" alt="" (click)="setDeleteImageVal(dataImage.id,i)" class="plus-btn" data-toggle="modal" data-target="#deleteImageModal" data-backdrop="static" style="position:absolute;right:-20px;bottom:-9px;height:24px;width:24px;">
+                                            </span>
+                                            <span *ngIf="dataImage.ext == 'pdf'">
+                                                <img src="assets/images/pdf.png" alt="" class="plus-btn">
+                                                <img src="assets/images/delete.png" alt="" (click)="setDeleteImageVal(dataImage.id,i)" class="plus-btn" data-toggle="modal" data-target="#deleteImageModal" data-backdrop="static" style="position:absolute;right:-20px;bottom:-9px;height:24px;width:24px;">
+                                            </span>                                         
+                                            </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cancel_submit_btn_wrap text-right">
+                    <button class="cancelBtn" (click)="cancelCompany()">Cancel</button>
+                    <button class="submitBtn" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--deleteCompanyModal Model -->
+<div class="modal userMessage fade" id="deleteCompanyModal" #deleteCompanyModal tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="m-body">
+                    <label>Alert</label>
+                    <p>Are you sure you want to delete this company</p>                  
+                </div>
+                <div class="text-right">                  
+                    <button class="blueBtn" (click)="deleteCompany('true')">Ok</button>
+                    <button class="greyBtn" #closeBtn id="deletenode" (click)="deleteCompany('false')" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--deleteCompanyModal Model -->
+<!--deleteImageModal Model -->
+<div class="modal userMessage fade" id="deleteImageModal" #deleteImageModal tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="m-body">
+                <label>Alert</label>
+                <p>Are you sure you want to delete this image</p>                  
+            </div>
+            <div class="text-right">                  
+                <button class="blueBtn" (click)="deleteImage('true')">Ok</button>
+                <button class="greyBtn" #closeImageBtn id="delete-node" (click)="deleteImage('false')" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--deleteImageModal Model -->

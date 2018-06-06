@@ -1,0 +1,29 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<div class="bg_grey">
+    <div class="container_1560">
+        <div class="edit_profile_wrap about_us_page">
+            <h2>FAQ</h2>          
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <span *ngIf="dataArray?.length > 0">
+                        <div id="accordion" class="accordion">
+                            <div *ngFor="let data of dataArray; let i = index">
+                                <div class="card mb-0">
+                                        <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+                                            <a role="button"  class="card-title" data-toggle="collapse" data-parent="#v" href="#collapse{{data.id}}" aria-expanded="true" aria-controls="collapseOne">
+                                                    {{data.question}}
+                                            </a>
+                                        </div>
+                                        <div id="collapse{{data.id}}" class="card-body collapse" data-parent="#accordion" >
+                                            <p>{{data.answer}}
+                                            </p>
+                                        </div>                     
+                                </div>
+                            </div>
+                        </div>                            
+                </span>
+                <p class="errorMessage {{msgClass}}" *ngIf="message != ''">{{message}}</p>
+            </div>
+        </div>
+    </div>
+</div>   

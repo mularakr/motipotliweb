@@ -1,0 +1,97 @@
+<div class="booked-jobs-wrap bg_grey pos-rel job-search-result-wrap">
+	<div class="booked-jobs-wrap container ">
+		<div class="row">
+			<div class="col-md-12 col-lg-12 ">
+				<div class="booked_job_tab">
+					<div class="filter_by_wrap">
+						<h5>Search Job Results
+							<span *ngIf="categoryName !=''">"{{categoryName}}"</span>
+						</h5>
+					</div>
+				</div>
+				<span *ngIf="jobsArray?.length > 0">
+					<div class="job-post-description job_complete_by_employee" *ngFor="let job of jobsArray | paginate: { itemsPerPage: 5, currentPage: p };let i = index;">
+						<div>
+							<div class="title_wrap">
+								<div class="title">
+									<span *ngIf="loginType == ''">
+										<h3>{{job.title}}</h3>
+									</span>
+									<span *ngIf="loginType == 'employer'">
+										<h3>{{job.title}}</h3>
+									</span>
+									<span *ngIf="loginType == 'employee'">
+										<h3 class="color-pink">{{job.title}}</h3>
+									</span>
+									<span *ngIf="job.company_name!=null">
+										<p>{{job.company_name}}</p>
+									</span>
+									<span *ngIf="job.company_name == ''">
+										<p>Personal</p>
+									</span>
+								</div>
+								<div class="company-logo">
+									<img src={{job.company_logo}} alt="">
+								</div>
+							</div>
+							<div class="job_dec_wrap">
+								<div class="job_des">
+									<span class="job_dec_title">No. Of Positions Remaining:</span>
+									<span class="job-detail_info" flex> {{job.positions}}</span>
+								</div>
+							</div>
+							<div class="job_dec_wrap">
+								<div class="job_des">
+									<span class="job_dec_title">Job Description :</span>
+									<span class="job-detail_info"> {{job.description }}</span>
+								</div>
+								<div class="share_anchor">
+								</div>
+							</div>
+							<div class="cost_wrap">
+								<div class="cost_and_date_of_job">
+									<p>Cost:
+										<span class="rupee_sign">
+										</span> {{job.buyer_cost | currency:'INR':true:'1.2-2'}} /-
+									</p>
+									<p>
+										<span class="date">
+										{{job.startdate}}
+										</span>
+										<span class="time">
+										{{job.starttime }} to {{job.endtime}}
+										</span>
+									</p>
+								</div>
+								<div class="decline-accept-wrap">
+									<span *ngIf="job.userBidStatus !=''">
+										<div class="message_employee_btn_wrap youer-bid">
+											<div class="btn_wrap">
+												<p class="color-pink">You've Bid on it.</p>
+											</div>
+										</div>
+									</span>
+									<span *ngIf="loginType == ''">
+									<button [routerLink]="['/viewJobDetails/'+job.job_id]" class="accept-btn">Job Details</button>
+									</span>
+									<span *ngIf="loginType == 'employer'">
+									<button [routerLink]="['/viewJobDetails/'+job.job_id]" class="accept-btn">Job Details</button>
+									</span>
+									<span *ngIf="loginType == 'employee'">
+									<button [routerLink]="['/viewEmployeeJob/'+job.job_id]" class="accept-btn pink-btn">Job Details</button>
+									</span>								
+								</div>
+							</div>
+						</div>
+					</div>
+					<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</span>
+				<span *ngIf="jobMsg != ''">
+					<div class="job-post-description job_complete_by_employee">
+						<p class="errorMessage {{msgClass}}">{{jobMsg}}</p>
+					</div>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>

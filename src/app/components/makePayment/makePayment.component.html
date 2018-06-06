@@ -1,0 +1,64 @@
+<div class="changepassword_bg_color">
+    <div class="changePasswordSection makeAPaymentWrap">
+        <div class="row">
+            <div class="col-lg-7 clearfix">
+                <h5 class="">Make a payment</h5>
+                <p class="{{msgClass}}" *ngIf="myPaymentMsg!=''">{{myPaymentMsg}}</p>
+                <form #f="ngForm" [formGroup]="payuFrom" (ngSubmit)="payuFrom.valid && submitData(payuFrom.value);" novalidate="false">
+                    <div class="field radio_part">
+                        <span *ngIf="myPaymentOptions?.length > 0">                             
+                            <span *ngFor="let paymentValue of myPaymentOptions ;let i = index">
+                                    <div >
+                                        <input name="payment_source" [attr.disabled]="(paymentValue.status == 0) ? true : flase" value="{{paymentValue.name}}"  [formControl]="payuFrom.controls['payment_source']" id="{{paymentValue.name}}" type="radio">
+                                        <label for="{{paymentValue.name }}">Paid  {{(paymentValue.name == 'online') ? paymentValue.name : 'in '+paymentValue.name  }}</label>
+                                    </div>
+                            </span>
+                        </span>
+                        <p class="errorMessage" *ngIf="(payuFrom.controls['payment_source'].hasError('required') && f.submitted )" style="color:red">*Payment mode can't be empty</p>
+                        <input name="lastname" [formControl]="payuFrom.controls['lastname']" [(ngModel)]="myDetails.lastname" id="" type="hidden">
+                        <input name="amount" [formControl]="payuFrom.controls['amount']" [(ngModel)]="myDetails.amount" id="" type="hidden">
+                        <input name="email" [formControl]="payuFrom.controls['email']" [(ngModel)]="myDetails.email" id="" type="hidden">
+                        <input name="firstname" [formControl]="payuFrom.controls['firstname']" [(ngModel)]="myDetails.firstname" id="" type="hidden">
+                        <input name="furl" [formControl]="payuFrom.controls['furl']" [(ngModel)]="myDetails.furl" id="" type="hidden">
+                        <input name="hash" [formControl]="payuFrom.controls['hash']" [(ngModel)]="myDetails.hash" id="" type="hidden">
+                        <input name="key" [formControl]="payuFrom.controls['key']" [(ngModel)]="merchant_key" id="" type="hidden">
+                        <input name="phone" [formControl]="payuFrom.controls['phone']" [(ngModel)]="myDetails.phone" id="" type="hidden">
+                        <input name="productinfo" [formControl]="payuFrom.controls['productinfo']" [(ngModel)]="myDetails.productinfo" id="" type="hidden">
+                        <input name="surl" [formControl]="payuFrom.controls['surl']" [(ngModel)]="myDetails.surl" id="" type="hidden">
+                        <input name="txnid" [formControl]="payuFrom.controls['txnid']" [(ngModel)]="myDetails.txnid" id="" type="hidden">
+                    </div>
+                    <div class="buttonDiv pad-left">
+                        <input type="submit" value="SUBMIT" class="aBtn submitBtn">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-5 rate_employee_wrap">
+                <div class="border-top-grey">
+                    <h5 class="">Rate Employee</h5>
+                    <form #f1="ngForm" [formGroup]="ratingFrom" (ngSubmit)="ratingFrom.valid && submitRating(ratingFrom.value);" novalidate="false">
+                        <div class="field radio_part">
+                            <div>
+                                <input name="rating" [(ngModel)]="ratingval" value="100" id="mustHire" [formControl]="ratingFrom.controls['rating']" type="radio">
+                                <label for="mustHire">Must Hire</label>
+                            </div>
+                            <div>
+                                <input name="rating" [(ngModel)]="ratingval" value="50" [formControl]="ratingFrom.controls['rating']" id="canHire" type="radio">
+                                <label for="canHire">Can Hire</label>
+                            </div>
+                            <div>
+                                <input name="rating" [(ngModel)]="ratingval" value="0" [formControl]="ratingFrom.controls['rating']" id="absent" type="radio">
+                                <label for="absent">Not Satisfied/Absent</label>
+                            </div>
+                            <p class="errorMessage" style="color:red" *ngIf="(ratingFrom.controls['rating'].hasError('required') && f1.submitted )">*Rating can't be empty.</p>
+
+                            <p class="{{msgClass}}" *ngIf="ratingMsg != ''">{{ratingMsg}}</p>
+                        </div>
+                        <div class="buttonDiv">
+                            <input type="submit" value="SUBMIT" class="aBtn submitBtn">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

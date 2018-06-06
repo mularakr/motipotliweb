@@ -1,0 +1,260 @@
+<div class="overflowWrap">
+    <div class="booked-jobs-wrap bg_grey pos-rel">
+        <div class="booked-jobs-wrap container_1560">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-xl-4 calender_order_change">
+                    <div class="row">
+                        <div class="col-md-6 col-xl-12 col-lg-6">
+                            <!-- ================calender desktop ============== -->
+                            <div class="calender_wrap calender_wrap_desktop">
+                                <form [formGroup]="myForm" novalidate="false" class="img-fluid">
+                                    <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" (dateRangeChanged)="onDateRangeChanged($event)"
+                                        [formControl]="myForm.controls['myDateRange']" class="datepicker1"></my-date-range-picker>
+                                </form>
+                            </div>
+                            <!-- ================================= -->
+                        </div>
+                        <div class="col-md-6 col-xl-12 col-lg-6">
+                            <div class="post_job_wrap pos-rel">
+                                <img src="assets/images/postjobimg.png" class="img-fluid" alt="">
+                                <a [routerLink]="['/postjob']" href="#" class="post-a-job-btn">POST A JOB
+                                    <span></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-xl-8 pad-lf-10">
+                    <div class="booked_job_tab">
+                        <div class="bookedJobOpenJobAnchor">
+                            <div class="active">
+                                <a style="cursor:pointer"  [routerLink]="['/bookedJob']">BOOKED JOBS</a>
+                            </div>
+                            <div>
+                                <a style="cursor:pointer"  [routerLink]="['/openJob']">OPEN JOBS</a>
+                            </div>
+                             <div >
+                                    <a style="cursor:pointer"  [routerLink]="['/expiredJob']">EXPIRED JOBS</a>
+                            </div>
+                        </div>
+                        <div class="filter_by_wrap">
+                            <div class="filter-wrap">
+                                <span>Filter By</span>
+                                <select name="company_id" (change)="onSelect($event.target.value)">
+                                    <option value="" selected="selected">--Select--</option>
+                                    <option *ngFor="let data of companies; let i = index;" value="{{ data.company_id }}">
+                                        {{ data.title }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="date-wrap">
+                                <div class="from-date-wrap">
+                                    <span class="from-date-text">From
+                                        <label>Date</label>
+                                    </span>
+                                    {{modelDateArray.start}}
+                                </div>
+                                <div class="from-date-wrap">
+                                    <span class="to-date-text">To
+                                        <label>Date</label>
+                                    </span>
+                                    {{modelDateArray.end}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- ================calender mobile ============== -->
+                    <div class="calender_wrap calender_wrap_mobile">
+                        <form [formGroup]="myForm" novalidate="false" class="img-fluid">
+                            <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" (dateRangeChanged)="onDateRangeChanged($event)"
+                                [formControl]="myForm.controls['myDateRange']" class="datepicker1"></my-date-range-picker>
+                        </form>
+                    </div>
+                    <!-- ============================== -->
+                    <span *ngIf="jobs?.length > 0">
+                        <div class="job-post-description" *ngFor="let job of jobs; let i = index">
+                            <div class="title_wrap" id="sq_{{job.job_id}}">
+                                <div class="title">
+                                    <h3>
+                                        <a [routerLink]="['/viewJob/'+job.job_id]">{{job.title}}</a>
+                                    </h3>
+                                    <span *ngIf="job.company_name!=null">
+                                        <p>{{job.company_name}}</p>
+                                    </span>
+                                    <span *ngIf="job.company_name == ''">
+                                        <p>Personal</p>
+                                    </span>
+                                </div>
+                                <div class="company-logo">
+                                    <img src={{job.company_logo}} alt="">
+                                </div>
+                            </div>
+                            <div class="job_dec_wrap">
+                                <div class="job_des">
+                                    <span class="job_dec_title">Job Description :</span>
+                                    <span class="job-detail_info">{{job.description }}</span>
+                                </div>
+                            </div>
+                            <div class="cost_wrap">
+                                <div class="cost_and_date_of_job">
+                                    <p>Cost:
+                                        <span class="rupee_sign">
+                                    </span> {{job.total_wage | currency:'INR':true:'1.2-2'}}</p>
+                                    <span style="color:#158FA7;font-size:13px">{{job.jobcost}}</span>
+                                    <p>
+                                        <span class="date gapMobile">
+                                            {{job.startdate}}
+                                        </span>
+                                        <span class="time">
+                                            {{job.starttime }} - {{job.endtime}}
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="mark_job_btn mobile-inline">
+                                    <button *ngIf="job.iscomplete == 0" class="accept-btn message-btn" (click)="setVal(job.job_id);" data-toggle="modal" data-target="#messageToEmployee">Message</button>
+                                    <button *ngIf="job.iscomplete == 0" data-target="#markalert" data-toggle="modal" (click)="getMarkJobEmployeeList(job.job_id,job.title)">Mark Job as Complete</button>
+                                    <span class="job_complete_text" *ngIf="job.iscomplete == 1">
+                                        <p class="errorMessage">Job Completed <span class=""></span></p>
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </span>
+                    <div class="job-post-description" *ngIf="jobs == null">
+                        <p class="errorMessage {{msgClass}}" *ngIf="msg != null">{{ msg }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- mobile filters tags  -->
+        <div class="floating_filters_mobile_wrap">
+            <a href="#" data-toggle="modal" data-target="#filter_modal">
+                <img src="assets/images/filter_mobile.png">
+            </a>
+            <a href="#">
+                <img src="assets/images/post_job_mobil.png">
+            </a>
+        </div>
+    </div>
+</div>
+<!-- ====================== Mark Job Model modal =================== -->
+
+<div class="modal userMessage fade" id="markalert" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!--Form-->
+            <div class="m-body">
+                <label>Mark Job Completed of " {{titleofJob}} " </label>
+                <label class="bid_amount_text">
+                </label>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Payment need to be Made</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="markJobListArray?.length > 0">
+                        <tr *ngFor="let markJob of markJobListArray; let i = index">
+                            <td>{{markJob.user_name}}</td>
+                            <td>{{markJob.bid_amount}}</td>
+                            <td>
+                                <span *ngIf="markJob.status == 1">
+                                    <a [routerLink]="['/makePayment/'+markJob.id]">Accept</a>&nbsp;
+                                    <a *ngIf="paymentFlag == 2" (click)="markJobComplete(markJob.id,'decline')">Decline</a>
+                                    <p *ngIf="paymentFlag == 1 || paymentFlag == 0" class="errorMessage error-message">Pending</p>
+                                </span>
+                                <span class="job_complete_text" *ngIf="markJob.status == 2">
+                                    <p class="errorMessage success-message">Job Completed <span class=""></span></p>
+                                </span>
+                                <span *ngIf="markJob.status == 3">
+                                     <a [routerLink]="['/makePayment/'+markJob.id]">Accept</a>
+                                    <p class="errorMessage error-message">Pending</p>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="markJobListArray?.length <= 0">
+                        <tr>
+                            <td colspan="4">
+                                <p class="errorMessage {{msgClass}}" *ngIf="setMessage !=''">{{setMessage}} </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-right">
+                <input type="button" #fileInput class="blueBtn btn-brown cancle-btn" data-dismiss="modal" value="Cancel">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===================== end ================= -->
+
+<!-- ====================== Message To Employee modal1 =================== -->
+
+<div class="modal userMessage fade" id="messageToEmployee" #messageToEmployee tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form #employeeMessage="ngForm" [formGroup]="employeeMessageForm" (ngSubmit)="employeeMessageForm.valid && sendMessageEmployer(employeeMessageForm.value,employeeMessage);">
+                <div class="m-body">
+                     <label>Message to employee</label>
+                    <p class="errorMessage {{msgClass}}" *ngIf="msgErr!=null">{{msgErr}}</p>
+                    <select class="form-control" name="employee_id" [formControl]="employeeMessageForm.controls['employee_id']">
+                        <option value="" selected="selected">-Select Employee-</option>
+                        <option *ngIf="registeredUser !=''" value="all">All</option>
+                        <ng-container *ngFor="let data of registeredUser; let i = index;">                            
+                            <option *ngIf="data.employee_jobStatus != 2" value="{{ data.employee_id }}">
+                                {{ data.employee_name }}
+                            </option>
+                        </ng-container>
+                    </select>
+                    <p class="errorMessage" *ngIf="(employeeMessageForm.controls['employee_id'].hasError('required') && employeeMessage.submitted)"
+                        style="color:red">*Select Employee can't be Empty.</p>
+                    <div class="textWrap">
+                        <br>
+                        <textarea #message [formControl]="employeeMessageForm.controls['message']" placeholder="Type Your Message"></textarea>
+                        <p class="errorMessage" *ngIf="(employeeMessageForm.controls['message'].hasError('required') &&  employeeMessage.submitted)"
+                        style="color:red">*Description can't be Empty.</p>
+                    </div>
+                    
+                </div>
+                <div class="text-right">
+                    <button class="blueBtn message-btn">Submit </button>
+                    <button class="blueBtn btn-brown cancle-btn" #closeBtn (click)="cancleModel()" data-dismiss="modal">Cancel</button>
+                    <input type="hidden" #closeBtnMsg data-dismiss="modal">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ===================== end ================= -->
+
+<!-- ============================ filter modal ======================== -->
+
+
+<div class="modal  filter_modal fade" id="filter_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <h3>Filter By</h3>
+                <select name="company_id" (change)="onSelect($event.target.value)">
+                    <option value="" selected="selected">--Select--</option>
+                    <option value="0">Personal</option>
+                    <option *ngFor="let data of companies; let i = index;" value="{{ data.company_id }}">
+                        {{ data.title }}
+                    </option>
+                </select>
+            </div>
+            <input type="hidden" #closeFilte id="deleteFilter" data-dismiss="modal">
+            
+        </div>
+    </div>
+</div>
+
+<!-- ======================= end ==================== -->

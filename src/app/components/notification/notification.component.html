@@ -1,0 +1,50 @@
+<div class="bg_grey">
+    <div class="main-container">
+        <div class="edit_profile_wrap about_us_page">
+            <h2>Notification Center</h2>
+            <div *ngIf="login_type == 'employer'">
+                <span *ngIf="notificationData?.length > 0">
+                    <p *ngFor="let notification of notificationData | paginate: { itemsPerPage: 20, currentPage: p }; let i = index" style="margin-bottom:15px;">
+                        <span class="notiWrap">                        
+                        <span *ngIf="notification.type == 'message'">
+                            <span [innerHTML]="notification.message"></span>
+                        </span>
+                        <span *ngIf="notification.type != 'message'">
+                            <span *ngIf="notification.type != 'payment'">
+                                    <a [routerLink]="['/viewJob/'+notification.job_id]">
+                                        <span [innerHTML]="notification.message"></span>
+                                    </a>
+                            </span>                            
+                            <span *ngIf="notification.type == 'payment'">                                
+                                    <a [routerLink]="['/bookedJob']">
+                                        <span [innerHTML]="notification.message"></span>
+                                    </a>                                   
+                            </span>                           
+                        </span>
+                    </span>
+                    </p>
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </span>
+                <p class="errorMessage {{msgClass}}" *ngIf="msg != ''">{{msg}}</p>
+            </div>
+            <div *ngIf="login_type == 'employee'">
+                <span *ngIf="notificationData?.length > 0">
+                    <p *ngFor="let notification of notificationData | paginate: { itemsPerPage: 20, currentPage: p }; let i = index" style="margin-bottom:15px;">
+                    <span class="notiWrap">
+                        <span *ngIf="notification.type =='message'">
+                            <span [innerHTML]="notification.message"></span>
+                        </span>
+                        <span *ngIf="notification.type !='message'">
+                            <a [routerLink]="['/viewEmployeeJob/'+notification.job_id]">
+                                <span [innerHTML]="notification.message"></span>
+                            </a>
+                        </span>
+                    </span>
+                    </p>
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </span>
+                <p class="errorMessage {{msgClass}}" *ngIf="msg != ''">{{msg}}</p>
+            </div>
+        </div>
+    </div>
+</div>

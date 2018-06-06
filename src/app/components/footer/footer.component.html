@@ -1,0 +1,222 @@
+<footer>
+    <span *ngIf="isUserLoggedIn =='employer'">
+        <div class="footer_wrap">
+            <div class="main-container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="about_motipoli">
+                            <h3 class="logo_footer"></h3>
+                            <div [innerHTML]="mydata"></div>
+                            <a [routerLink]="['/about']">Read more</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-5">
+                        <h4>Contact Us</h4>
+                        <div  [innerHTML]="contactArray"></div>
+                    </div>
+                    <div class="col-md-12 col-lg-4 pad-lf-30">
+                        <div class="tab_floating_div">
+                            <h4 class="quick_link_heading">Quicks Links</h4>
+                            <div class="footer_nav">
+                                <div>
+                                    <a [routerLink]="['/about']">About Us</a>
+                                </div>
+                                <div>
+                                    <a [routerLink]="['/howitworks']"> How it works?</a>
+                                </div>
+                                <div>
+                                    <a [routerLink]="['/faq']">FAQ</a>
+                                </div>
+                                
+                                <div>
+                                    <a [routerLink]="['/contactUs']">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="socila_wrap_footer">
+                            <div class="row">
+                                <div class="col-sm-6 col-6">
+                                    <p>Keep in touch</p>
+                                    <ul class="pad-0">
+                                        <li class="twitter-icon">
+                                            <a href="#"></a>
+                                        </li>
+                                        <li class="insta-icon">
+                                            <a href="#"></a>
+                                        </li>
+                                        <li class="facebook-icon">
+                                            <a href="https://www.facebook.com/motipotli/" target="_blank"></a>
+                                        </li>
+                                        <li class="google-icon">
+                                            <a href="#"></a>
+                                        </li>                                        
+                                    </ul>
+                                </div> 
+                                <div class="col-sm-6 col-6">
+                                    <p>Powered by</p>
+                                    <ul class="pad-0">
+                                        <li>
+                                            <a href="https://msg91.com/startups/?utm_source=startup-banner"><img src="https://msg91.com/images/startups/msg91Badge.png" width="65" height="20" title="MSG91 - SMS for Startups" alt="Bulk SMS - MSG91"></a>
+                                        </li> 
+                                    </ul>
+                                </div>
+                                                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy_right">
+            <span>Motipotli@2018.All Right Reserved </span>
+            <span class="termsCond"> <a style="color:white" [routerLink]="['/termsCondition']">Terms &amp; Conditions</a> |  <a style="color:white" [routerLink]="['/privacy']">Privacy Policy</a></span>
+        </div>
+    </span>
+    <span *ngIf="isUserLoggedIn =='employee'">
+        <div class="footer_wrap bg-red-footer">
+            <div class="main-container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="about_motipoli">
+                            <h3 class="logo_footer"></h3>
+                            <div [innerHTML]="mydata"></div>
+                            <a [routerLink]="['/about']">Read more</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-5">
+                        <h4>Contact Us</h4>
+                        <div  [innerHTML]="contactArray"></div>
+                    </div>
+                    <div class="col-md-12 col-lg-4 pad-lf-30">
+                        <div class="tab_floating_div">
+                            <h4 class="quick_link_heading">Quicks Links</h4>
+                            <div class="footer_nav">
+                                <div>
+                                    <a [routerLink]="['/about']">About Us</a>
+                                </div>
+                                <div>
+                                    <a [routerLink]="['/howitworks']"> How it works?</a>
+                                </div>
+                                <div>
+                                    <a [routerLink]="['/faq']">FAQ</a>
+                                </div>
+                                
+                                <div>
+                                    <a [routerLink]="['/contactUs']">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="socila_wrap_footer">
+                            <div class="row">
+                                <div class="col-sm-6 col-6">
+                                    <p>Keep in touch</p>
+                                    <ul class="pad-0">
+                                        <li class="twitter-icon">
+                                            <a href="#"></a>
+                                        </li>
+                                        <li class="insta-icon">
+                                            <a href="#"></a>
+                                        </li>
+                                        <li class="facebook-icon">
+                                            <a href="https://www.facebook.com/motipotli/" target="_blank"></a>
+                                        </li>
+                                        <li class="google-icon">
+                                            <a href="#"></a>
+                                        </li>                                        
+                                    </ul>
+                                </div> 
+                                <div class="col-sm-6 col-6">
+                                    <p>Powered by</p>
+                                    <ul class="pad-0">
+                                        <li>                                            
+                                            <a href="https://msg91.com/startups/?utm_source=startup-banner"><img src="https://msg91.com/images/startups/msg91Badge.png" width="65" height="20" title="MSG91 - SMS for Startups" alt="Bulk SMS - MSG91"></a>
+                                        </li> 
+                                    </ul>
+                                </div>
+                                                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy_right copy_right_red_theme">
+            <span>Motipotli@2018.All Right Reserved </span>
+            <span class="termsCond"> <a style="color:white" [routerLink]="['/termsCondition']">Terms &amp; Conditions</a> |  <a style="color:white" [routerLink]="['/privacy']">Privacy Policy</a></span>
+        </div>
+    </span>
+    <span *ngIf="isUserLoggedIn == null">
+        <div class="footer_wrap">
+            <div class="main-container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="about_motipoli">
+                            <h3 class="logo_footer"></h3>
+                            <div [innerHTML]="mydata"></div>
+                            <a [routerLink]="['/about']">Read more</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-5">
+                        <h4>Contact Us</h4>
+                        <div  [innerHTML]="contactArray"></div>
+                    </div>
+                    <div class="col-md-12 col-lg-4 pad-lf-30">
+                        <div class="tab_floating_div">
+                            <h4 class="quick_link_heading">Quicks Links</h4>
+                            <div class="footer_nav">
+                                <div>
+                                    <a [routerLink]="['/about']">About Us</a>
+                                </div>
+                                <div>
+                                    <a [routerLink]="['/howitworks']"> How it works?</a>
+                                </div>
+                                <div>
+                                    <a [routerLink]="['/faq']">FAQ</a>
+                                </div>
+                                
+                                <div>
+                                    <a [routerLink]="['/contactUs']">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="socila_wrap_footer">
+                            <div class="row">
+                                <div class="col-sm-6 col-6">
+                                    <p>Keep in touch</p>
+                                    <ul class="pad-0">
+                                        <li class="twitter-icon">
+                                            <a href="#"></a>
+                                        </li>
+                                        <li class="insta-icon">
+                                            <a href="#"></a>
+                                        </li>
+                                        <li class="facebook-icon">
+                                            <a href="https://www.facebook.com/motipotli/" target="_blank"></a>
+                                        </li>
+                                        <li class="google-icon">
+                                            <a href="#"></a>
+                                        </li>                                        
+                                    </ul>
+                                </div> 
+                                <div class="col-sm-6 col-6">
+                                    <p>Powered by</p>
+                                    <ul class="pad-0">
+                                        <li>
+                                            <a href="https://msg91.com/startups/?utm_source=startup-banner"><img src="https://msg91.com/images/startups/msg91Badge.png" width="65" height="20" title="MSG91 - SMS for Startups" alt="Bulk SMS - MSG91"></a>
+                                        </li> 
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy_right">
+            <span>Motipotli@2018.All Right Reserved </span>
+            <span class="termsCond"> <a style="color:white" [routerLink]="['/termsCondition']">Terms &amp; Conditions</a> |  <a style="color:white" [routerLink]="['/privacy']">Privacy Policy</a></span>
+        </div>
+    </span>
+</footer>
+ <div class="background-fade"></div>

@@ -1,0 +1,52 @@
+<div class="modal loginModal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="leftInfoDiv">
+					<div class="logo text-center">
+						<span></span>
+					</div>
+					<div class="compInfo">
+						<div [innerHTML]="aboutmydata"></div>
+					</div>
+				</div>
+				<div class="formDiv">
+					<form #f1="ngForm" [formGroup]="signInForm" (ngSubmit)="signInForm.valid && signIn(signInForm.value);">
+					<button type="button" class="close" (click)="closeForm(f1);" data-dismiss="modal">&times;</button>
+					<p class="errorMessage" style="color:red;" *ngIf="msg != null">{{ msg }}</p>
+					<h4>Login as a</h4>
+					<div class="field radio_part">
+						<div>
+							<input name="login_type" value="employer" id="emp" type="radio" [formControl]="signInForm.controls['login_type']">
+							<label for="emp">Employer</label>
+						</div>
+						<div>
+							<input name="login_type" value="employee" id="emp1" type="radio" [formControl]="signInForm.controls['login_type']">
+							<label for="emp1"> Employee</label>
+						</div>
+						<p class="errorMessage" *ngIf="(signInForm.controls['login_type'].hasError('required') && f1.submitted )" style="color:red">*Select Login Type.</p>
+					</div>
+					<div class="field">
+						<input type="text" name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [formControl]="signInForm.controls['email']"
+							placeholder="Email">
+						<p class="errorMessage" style="color:red" *ngIf="(signInForm.controls['email'].hasError('required')  && f1.submitted )" style="color:red">*Email can't be Empty</p>
+						<p class="errorMessage" style="color:red" *ngIf="(signInForm.controls['email'].hasError('pattern') && f1.submitted)">*Email is invalid.</p>
+					</div>
+					<div class="field">
+						<input type="password" name="password" [formControl]="signInForm.controls['password']" placeholder="Password"> 
+						<p class="errorMessage" style="color:red" *ngIf="(signInForm.controls['password'].hasError('required') && f1.submitted )">*Password can't be Empty.</p>
+					</div>
+					<div class="actionBtn clearfix">
+						<a class="blueLink" href="#" data-toggle="modal" data-dismiss="modal" (click)="add_class()" data-target="#forgetpassword">Forgot Password?</a>
+						<button class="loginBtn" type="submit">LOGIN</button>
+						<button class="btn btn-danger" #fileInput id="delete-node" name="button" data-dismiss="modal" hidden="hidden"></button>
+					</div>
+					<p class="text-center creatAccountLink mb-0">New User ?
+						<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#signup_modal" (click)="add_class()" class="blueLink">CREATE A NEW ACCOUNT</a>
+					</p>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

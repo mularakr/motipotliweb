@@ -1,0 +1,20 @@
+<div class="col-lg-6 col-md-6 col-sm-6 col-6">
+	<div class="form-group pos-rel start-date-time-wrap">
+		<label>Start Date</label>
+		<input class="form-control" placeholder="yyyy-mm-dd"
+				name="startdate" (keypress)="checkNumeric($event)" [(ngModel)]="model"  ngbDatepicker #d="ngbDatepicker" (ngModelChange)="date($event, 'date1')">
+		<button class="input-group-addon" (click)="d.toggle()" type="button" style="background: transparent;border:none;z-index: 99;">
+			<span class="calender-icon" style="bottom: 21px;"></span>          
+		</button> 
+	</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-6">
+	<div class="form-group start-date-time-wrap pos-rel">
+		<label>End Date</label>
+		<input class="form-control" placeholder="yyyy-mm-dd"
+				name="enddate" (keypress)="checkNumeric($event)" [(ngModel)]="model2" ngbDatepicker #d2="ngbDatepicker" (ngModelChange)="date($event, 'date2')">
+		<button class="input-group-addon" (click)="d2.toggle()" type="button" style="background: transparent;border:none;z-index: 99;">
+		<span class="calender-icon" style="bottom: 21px;"></span>
+		</button>
+	</div>
+</div>

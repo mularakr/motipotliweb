@@ -1,0 +1,113 @@
+<section class="bg_grey">
+        <div class="JobDetailSec employeeJobDetail">
+            <div class="container_1560">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
+                        <span *ngIf="jobs!=null">
+                            <div class="requestDiv">
+                                <div class="HeadWrapper">
+                                    <div class="requestHead">
+                                        <h3 *ngIf="loginType == 'employer' || loginType == null">{{jobs.title}}</h3>
+                                        <h3 *ngIf="loginType == 'employee'" class="color-pink">{{jobs.title}}</h3>
+                                        <span *ngIf="jobs.company_name!=null">
+                                            <h4 >{{jobs.company_name}}</h4>
+                                        </span>
+                                        <span *ngIf="jobs.company_name == ''">
+                                            <h4>Personal</h4>
+                                        </span>
+                                    </div>
+                                    <div class="middleDiv">
+                                        <span *ngIf="loginType == 'employer' || loginType == null" style="color:#158ea8">Cost:</span>
+                                        <span *ngIf="loginType == 'employee'" style="color:#9E3C6F">Cost:</span>
+                                        <span class="" *ngIf="loginType == 'employer' || loginType == null" style="color:#158ea8">{{jobs.total_wage | currency:'INR':true:'1.2-2'}}</span>
+                                        <span class="color-pink" *ngIf="loginType == 'employee'" style="color:#9E3C6F">{{jobs.total_wage | currency:'INR':true:'1.2-2'}}</span>
+                                    </div>
+                                    <div class="logoRt">
+                                        <img src={{jobs.company_logo}} alt="" class="img-fluid">
+                                    </div>
+                                </div>
+                                <div class="requestDetails">
+                                    <p class="Description">
+                                        <span class="Label">Job Description :</span> {{jobs.description }} 
+                                    </p>
+                                    <div class="middleFlex">
+                                        <div class="categoryDiv">
+                                            <span class="Label">Category :</span> {{jobs.category_name}}
+                                        </div>
+                                        <div class="midDiv">
+                                            {{jobs.startdate}} to {{jobs.enddate}}
+                                        </div>
+                                        <div class="midDiv">
+                                            {{jobs.stime }} to {{jobs.etime}}
+                                        </div>
+                                        <div class="midDiv timeDiv">
+                                            <span class="timeSpan">Total Hours : {{jobs.total_time}} hrs</span>
+                                        </div>
+                                        <div class="LocationDiv">
+                                            <span class="Label">Location:</span>
+                                            <span *ngIf="loginType !=''">
+                                            {{jobs.address1}} {{jobs.address2}}, {{jobs.city}}, {{jobs.state}}, {{jobs.pincode}}
+                                            </span>
+                                            <span *ngIf="loginType ==''">
+                                            XXXXXXX-XXXXXXX
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                        <div class="files_div_wrap">
+                            <div class="d-flex">
+                                <label>Files</label>
+                            </div>
+                            <div class="image_wrap">
+                                <span *ngIf="imageArray?.length > 0">
+                                    <div *ngFor="let image of imageArray; let i = index" class="job_detailDocuments">
+                                        <img src={{image.images}} class="img-fluid" alt="img">
+                                    </div>
+                                </span>
+                                <p class="errorMessage {{msgClass}}" *ngIf="imageArray == ''">No document found</p>
+                            </div>
+                            <div class="d-flex message_employee_btn_wrap">
+                                <div class="text-right">
+                                    <span *ngIf="loginType == '' || loginType == 'null'">
+                                    <button data-toggle="modal" data-target="#login_modal" data-backdrop="static" class=" btn-brown cancle-btn applyBtnCst">Apply</button>
+                                    </span>
+                                    <span *ngIf="loginType == 'employer'">
+                                    <button class="blueBtn btn-brown cancle-btn applyBtnCst" data-toggle="modal" data-target="#login_modal" data-backdrop="static">Apply</button>
+                                    </span>
+                                    <span *ngIf="loginType == 'employee'">
+                                    <button [routerLink]="['/viewEmployeeJob/'+currentJobId]" data-toggle="modal" data-target="#login_modal" data-backdrop="static" class=" btn-brown cancle-btn applyBtnCst" style="background: #9E3C6F!important">View Status</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-3">
+                        <div class="text-center">
+                            <ng-adsense [adClient]="'ca-pub-2201288336602886'" [adSlot]="6270830582" [display]="'inline-block'" [width]="130" [height]="50">
+                            </ng-adsense>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ====================== Login Alert modal =================== -->
+    <div class="modal userMessage fade" id="loginalert" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!--Form-->
+                <div class="m-body">
+                    <label>Message</label>
+                    <label class="bid_amount_text">
+                        <p class="errorMessage" *ngIf="message !=''">{{message}}</p>
+                    </label>
+                </div>
+                <div class="text-right">
+                    <input type="button" class="blueBtn btn-brown cancle-btn" data-dismiss="modal" value="Cancel">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ===================== end ================= -->

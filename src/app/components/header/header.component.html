@@ -1,0 +1,542 @@
+<span *ngIf="dologin ==false">
+		<header>
+			<nav class="navbar navbar-toggleable-md navbar-light main-container">
+				<a class="navbar-brand" [routerLink]="['/']"></a>
+				<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+					<ul class="navbar-nav mar-auto mt-2 mt-lg-0">
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/hireWorkers' }">
+							<a class="nav-link" [routerLink]="['/hireWorkers']">
+							<label class="link-text">HIRE EMPLOYEES</label>
+							<span class=""></span>
+							</a>
+						</li>
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/about' }">
+							<a class="nav-link" [routerLink]="['/about']">
+							<label class="link-text">ABOUT US</label>
+							</a>
+						</li>
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/contactUs' }">
+							<a class="nav-link" [routerLink]="['/contactUs']">
+							<label class="link-text">CONTACT US</label>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="form-inline my-2 my-lg-0 mobile_dis_none">
+					<ul class="navbar-nav mr-auto mt-2 mt-lg-0 login_btn_wrap">
+						<li class="login-btn">
+							<a href="#" data-toggle="modal" data-target="#login_modal" data-backdrop="static">
+							<span></span>LOGIN</a>
+						</li>
+						<li class="register-btn">
+							<a href="#" data-toggle="modal" data-target="#signup_modal" data-backdrop="static">
+							<span></span>REGISTER</a>
+						</li>
+					</ul>
+				</div>
+				<!-- Search Button-->
+				<div class="search_icon_header  form-inline">
+					<ul class="navbar-nav mr-auto mt-2 mt-lg-0 login_btn_wrap">
+						<li class="search-btn">
+							<a href="#" data-target="#searchModel" data-toggle="modal"></a>
+						</li>
+					</ul>
+				</div>
+				<button (click)="toggleMenu()" class="navbar-toggler" type="button">
+				<span class=""></span>
+				</button>
+			</nav>
+		</header>
+		<!-- Login Modal -->
+		<app-login (islogin)="getNotification($event)"></app-login>
+		<!--Signup Modal -->
+		<app-register></app-register>
+		<!-- ==================== forget password modal ==================== -->
+		<app-forgotpassword></app-forgotpassword>
+	</span>
+	<!-- =Employer Header Elements= -->
+	<span *ngIf="dologin == true && loginType == 'employer'">
+		<header>
+			<nav class="navbar navbar-toggleable-md navbar-light container_1560">
+				<a class="navbar-brand" [routerLink]="['/']"></a>
+				<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+					<ul class="navbar-nav mar-auto mt-2 mt-lg-0">
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/openJob' }">
+							<a class="nav-link" #open [routerLink]="['/openJob']" href="#">
+							MY JOBS
+							<span class=""></span>
+							</a>
+						</li>
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/postjob' }">
+							<a class="nav-link" [routerLink]="['/postjob']" href="#">
+							POST JOB
+							</a>
+						</li>
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/about' }">
+							<a class="nav-link" [routerLink]="['/about']">
+							ABOUT US
+							</a>
+						</li>
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/contactUs' }">
+							<a class="nav-link" [routerLink]="['/contactUs']">
+							CONTACT US
+							</a>
+						</li>
+					</ul>
+				</div>
+				<!-- =Employer Account Detail= -->
+				<div class="form-inline my-2 my-lg-0 mar-0-mobile mar-top-8" style="margin-bottom:0px!important">
+					<ul class="navbar-nav mr-auto mt-2 mt-lg-0 login_btn_wrap">
+						<li class="user_name_wrap">
+							<div class="account-detail-frame mobile-dis-block">
+								<a (click)="updateUnread()" [routerLink]="['/notification']" class="pos-rel notification-icon-col">
+								<span class="bell-icon "></span>
+								<span class="noti_icon">{{totalUnread}}</span>
+								</a>
+								<span class="welcome_text">WELCOME,</span>
+								<a class="account-name" href="#" id="dropdownMenuLink">
+								{{userName | uppercase}}
+								</a>
+								<p class="type_detail account-type-label"> ({{this.loginType | titlecase}})</p>
+								<!--Notification-->
+							</div>
+							<!-- =Mobile Device Content End//= -->
+							<!-- =Tablet/Desktop Device Content= -->
+							<div class="account-detail-frame">
+								<div class="notification_wrap pos-rel dropdown mobile_dis_none">
+									<a (click)="updateUnread()" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="pos-rel notification-icon-col">
+									<span class="bell-icon"></span>
+									<span class="noti_icon">{{totalUnread}}</span>
+									</a>
+									<div class="dropdown-menu notification" aria-labelledby="dropdownMenuButton">
+										<span *ngIf="notificationData!=''">
+											<span *ngFor="let notification of notificationData; let i = index">
+												<a class="dropdown-item " [routerLink]="['/notification']" *ngIf="i<2">
+												<span class="bid-detail" [innerHTML]="notification.message"></span>
+												<div class="noti-dat-time text-right">
+													<span> {{notification.date}}</span>
+													<span>{{notification.time}}</span>
+												</div>
+												</a>
+											</span>
+										</span>
+										<p class="errorMessage {{msgClass}}" *ngIf="msg !=''">{{msg}}</p>
+										<p class="text-center see-all-warp">
+											<a [routerLink]="['/notification']" href="#">See All</a>
+										</p>
+									</div>
+								</div>
+								<!-- =Notification Wrap End//= -->
+								<div class="dropdown  mobile_dis_none">
+									<span class="welcome_text">WELCOME,</span>
+									<a class="dropdown-toggle account-name" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									{{userName | uppercase}}
+									<br>
+									</a>
+									<div class="dropdown-menu clearfix" aria-labelledby="dropdownMenuLink">
+										<ul class="pad-0 clearfix">
+											<li>
+												<a class="dropdown-item" [ngClass]="{ 'active' : headerClass == '/editProfile' }" [routerLink]="['/editProfile']">
+												<label class="link-text">Edit Profile</label>
+												<span class="edit_profile_icon"></span>
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item" [ngClass]="{ 'active' : headerClass == '/company' }" [routerLink]="['/company']">
+												<label class="link-text">My companies</label>
+												<span class="companies_icon"></span>
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item" [ngClass]="{ 'active' : headerClass == '/employerTransactions' }" [routerLink]="['/employerTransactions']">
+												<label class="link-text">My transactions</label>
+												<span class="transactions_icon"></span>
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item" [ngClass]="{ 'active' : headerClass == '/changePassword' }" [routerLink]="['/changePassword']">
+												<label class="link-text">Change password</label>
+												<span class="change_password_icon"></span>
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item">
+												<label class="link-text" data-toggle="modal" data-target="#JobShareModal">Invite friends</label>
+												<span class="invite_friends_icon"></span>
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item " [routerLink]="['/logout']">
+												<label class="link-text">Logout</label>
+												<span class="logout_icon"> </span>
+												</a>
+											</li>
+										</ul>
+									</div>
+									<!-- =Drop Down Menu End//= -->
+								</div>
+							</div>
+							<!-- =Tablet/Desktop Device Content End//= -->
+						</li>
+					</ul>
+				</div>
+				<!-- =Employer Account Detail End//= -->
+				<button (click)="toggleMenu()" class="navbar-toggler" type="button">
+				<span class=""></span>
+				</button>
+			</nav>
+		</header>
+	</span>
+	<!-- =Employer Header Elements End//= -->
+	<!-- =Employee Header Elements= -->
+	<span *ngIf="dologin == true && loginType == 'employee' ">
+		<header class="red-theme">
+			<nav class="navbar navbar-toggleable-md navbar-light container_1560">
+				<a class="navbar-brand" [routerLink]="['/']"></a>
+				<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+					<ul class="navbar-nav mar-auto mt-2 mt-lg-0">
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/employeeMyJobs' }">
+							<a class="nav-link" [routerLink]="['/employeeMyJobs']" href="#">
+							MY JOBS
+							<span class=""></span>
+							</a>
+						</li>
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/searchEmployeeJobs' }">
+							<a class="nav-link" [routerLink]="['/searchEmployeeJobs']" href="#">
+							SEARCH JOB
+							</a>
+						</li>
+						<li class="nav-item" [ngClass]="{ 'active' : headerClass == '/myBids' }">
+							<a class="nav-link" [routerLink]="['/myBids']" href="#">
+							MY BIDS
+							</a>
+						</li>
+					</ul>
+				</div>
+				<!-- =navbar Toggle Demo 01 End//= -->
+				<!-- =Employee Account Detail= -->
+				<div class="form-inline my-2 my-lg-0 mar-0-mobile mar-top-8" style="margin-bottom:0px!important;">
+					<ul class="navbar-nav mr-auto mt-2 mt-lg-0 login_btn_wrap">
+						<li class="user_name_wrap">
+							<div class="account-detail-frame mobile-dis-block">
+								<a (click)="updateUnread()" [routerLink]="['/notification']" class="pos-rel notification-icon-col">
+								<span class="bell-icon "></span>
+								<span class="noti_icon">{{totalUnread}}</span>
+								</a>
+								<span class="welcome_text">WELCOME,</span>
+								<a class="account-name" href="#" id="dropdownMenuLink">
+								{{userName | uppercase}}
+								</a>
+								<!--Notification-->
+							</div>
+							<!-- =Mobile Device Content End//= -->
+							<!-- =Tablet/Desktop Device Content= -->
+							<div class="account-detail-frame">
+								<div class="notification_wrap pos-rel dropdown mobile_dis_none">
+									<a (click)="updateUnread()" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="pos-rel notification-icon-col">
+									<span class="bell-icon"></span>
+									<span class="noti_icon">{{totalUnread}}</span>
+									</a>
+									<div class="dropdown-menu notification" aria-labelledby="dropdownMenuButton">
+										<span *ngFor="let notification of notificationData; let i = index">
+											<a class="dropdown-item " [routerLink]="['/notification']" *ngIf="i<2">
+											<span class="bid-detail" [innerHTML]="notification.message"></span>
+											<div class="noti-dat-time text-right">
+												<span> {{notification.date}}</span>
+												<span>{{notification.time}}</span>
+											</div>
+											</a>
+										</span>
+										<p class="errorMessage {{msgClass}}" *ngIf="msg !=''">{{msg}}</p>
+										<span *ngIf="msg ==''">
+											<p class="text-center see-all-warp">
+												<a [routerLink]="['/notification']" href="#">See All</a>
+											</p>
+										</span>
+									</div>
+								</div>
+								<!-- =Notification Wrap End//= -->
+								<div class="dropdown mobile_dis_none">
+									<span class="welcome_text ">WELCOME,</span>
+									<a class="dropdown-toggle account-name" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									{{userName | uppercase}}
+									<br>
+									</a>
+									<div class="dropdown-menu clearfix" aria-labelledby="dropdownMenuLink">
+										<ul class="pad-0 clearfix">
+											<li>
+												<a class="dropdown-item" [ngClass]="{ 'active' : headerClass == '/employeeEdit' }" [routerLink]="['/employeeEdit']" href="#">
+												<label class="link-text">Edit Profile</label>
+												<span class="edit_profile_icon"></span>
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item" [ngClass]="{ 'active' : headerClass == '/employeeTransactions' }" [routerLink]="['/employeeTransactions']">
+												<label class="link-text">My transactions</label>
+												<span class="transactions_icon"></span>
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item" [ngClass]="{ 'active' : headerClass == '/changePassword' }" [routerLink]="['/changePassword']">
+												<label class="link-text">Change password</label>
+												<span class="change_password_icon"></span>
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item">
+												<label class="link-text" data-toggle="modal" data-target="#JobShareModal">invite friends</label>
+												<span class="invite_friends_icon1"></span>
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item " [routerLink]="['/logout']">
+												<label class="link-text">Logout</label>
+												<span class="logout_icon"> </span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<!-- =Tablet/Desktop Device Content End//= -->
+						</li>
+					</ul>
+				</div>
+				<!-- =Employee Account Detail End//= -->
+				<button (click)="toggleMenu()" class="navbar-toggler" type="button">
+				<span class="">
+				</span>
+				</button>
+			</nav>
+		</header>
+	</span>
+	<!-- =Employee Header Elements End//= -->
+	<!-- ========================= tab menu ================ -->
+	<span *ngIf="dologin == false">
+		<div class="toggle_menu_custom toggle toggleOut" [@slideInOut]="menuState" (clickOutside)="onClickedOutside($event)">
+		<div class="menu_links_wrap">
+			<ul class="pad-0">
+				<li class="hire" [ngClass]="{ 'active' : headerClass == '/hireWorkers' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/hireWorkers']">
+					<span class=""> </span>
+					<label class="link-text">Hire Employees</label>
+					</a>
+				</li>
+				<li class="contact" [ngClass]="{ 'active' : headerClass == '/contactUs' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/contactUs']">
+					<span class=""> </span>
+					<label class="link-text">Contact us</label>
+					</a>
+				</li>
+				<li class="about" [ngClass]="{ 'active' : headerClass == '/about' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/about']">
+					<span class=""> </span>
+					<label class="link-text">About us</label>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="login_reg_button_wrap pos-rel">
+			<div class="login-btn">
+				<a class="" (click)="toggleMenu()" data-target="#login_modal" data-toggle="modal" href="#">
+				<span></span>LOGIN</a>
+			</div>
+			<div class="register-btn">
+				<a (click)="toggleMenu()" data-target="#signup_modal" data-toggle="modal" href="#">
+				<span class=""></span>REGISTER
+				</a>
+			</div>
+		</div>
+		</div>
+	</span>
+	<!-- =============== end ================ -->
+	<!-- Mobile-->
+	<!-- ========================= tab menu after login================ -->
+	<span *ngIf="dologin == true && loginType == 'employer'">
+		<div class="toggle_menu_custom after_login_toggle_menu toggle toggleOut" [@slideInOut]="menuState" (clickOutside)="onClickedOutside($event)">
+		<div class="menu_links_wrap">
+			<ul class="pad-0">
+				<li [ngClass]="{ 'active' : headerClass == '/editProfile' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/editProfile']">
+					<span class="edit_profile_icon"></span>
+					<label class="link-text">Edit Profile</label>
+					</a>
+				</li>
+				<li [ngClass]="{ 'active' : headerClass == '/company' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/company']">
+					<span class="companies_icon"></span>
+					<label class="link-text"> My companies</label>
+					</a>
+				</li>
+				<li [ngClass]="{ 'active' : headerClass == '/employerTransactions' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/employerTransactions']">
+					<span class="transactions_icon"></span>
+					<label class="link-text">My transactions</label>
+					</a>
+				</li>
+				<li [ngClass]="{ 'active' : headerClass == '/changePassword' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/changePassword']">
+					<span class="change_password_icon"></span>
+					<label class="link-text">Change password</label>
+					</a>
+				</li>
+				<li>
+					<a class="" (click)="toggleMenu()">
+					<span class="invite_friends_icon"> </span>
+					<label class="link-text inviteLable" data-toggle="modal" data-target="#JobShareModal">invite friends</label>
+					</a>
+				</li>
+				<li [ngClass]="{ 'active' : headerClass == '/logout' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/logout']">
+					<span class="logout_icon"> </span>
+					<label class="link-text">Logout</label>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="menu_links_wrap">
+			<ul class="pad-0 border-none">
+				<li [ngClass]="{'active' : headerClass == '/openJob' }">
+					<a class="hire" (click)="toggleMenu()" [routerLink]="['/openJob']">
+					<span class=""> </span>
+					<label class="link-text">My Jobs</label>
+					</a>
+				</li>
+				<li [ngClass]="{'active' : headerClass == '/postjob' }">
+					<a class="post" (click)="toggleMenu()" [routerLink]="['/postjob']">
+					<span class=""> </span>
+					<label class="link-text">Post Job</label>
+					</a>
+				</li>
+				<li [ngClass]="{ 'active' : headerClass == '/contactUs' }">
+					<a class="contact" (click)="toggleMenu()" [routerLink]="['/contactUs']">
+					<span class=""> </span>
+					<label class="link-text">Contact us</label>
+					</a>
+				</li>
+				<li [ngClass]="{ 'active' : headerClass == '/about' }">
+					<a class="about" (click)="toggleMenu()" [routerLink]="['/about']">
+					<span class=""> </span>
+					<label class="link-text">About us</label>
+					</a>
+				</li>
+			</ul>
+		</div>
+		</div>
+	</span>
+	<!-- =========================employee tab menu after login================ -->
+	<span *ngIf="dologin == true && loginType == 'employee'">
+		<div class="toggle_menu_custom after_login_toggle_menu toggle toggleOut theme-pink" [@slideInOut]="menuState" (clickOutside)="onClickedOutside($event)">
+		<div class="menu_links_wrap">
+			<ul class="pad-0">
+				<li [ngClass]="{'active' : headerClass == '/employeeEdit' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/employeeEdit']">
+					<div class="icon-wrap">
+						<span class="edit_profile_icon"></span>
+					</div>
+					<label class="link-text">Edit Profile</label>
+					</a>
+				</li>
+				<li [ngClass]="{'active' : headerClass == '/employeeTransactions' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/employeeTransactions']">
+					<div class="icon-wrap">
+						<span class="transactions_icon"> </span>
+					</div>
+					<label class="link-text">My transactions</label>
+					</a>
+				</li>
+				<li [ngClass]="{'active' : headerClass == '/changePassword' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/changePassword']">
+					<div class="icon-wrap">
+						<span class="change_password_icon"> </span>
+					</div>
+					<label class="link-text"> Change password</label>
+					</a>
+				</li>
+				<li>
+					<a class="" (click)="toggleMenu()">
+						<div class="icon-wrap">
+							<span class="invite_friends_icon1"></span>
+						</div>
+						<label class="link-text" data-toggle="modal" data-target="#JobShareModal">Invite friends</label>
+					</a>
+				</li>
+				<li [ngClass]="{'active' : headerClass == '/logout' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/logout']">
+					<div class="icon-wrap">
+						<span class="logout_icon"> </span>
+					</div>
+					<label class="link-text">Logout</label>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="menu_links_wrap">
+			<ul class="pad-0 border-none">
+				<li [ngClass]="{'active' : headerClass == '/employeeMyJobs' }">
+					<a class="hire" (click)="toggleMenu()" [routerLink]="['/employeeMyJobs']">
+					<div class="icon-wrap">
+						<span class=""> </span>
+					</div>
+					<label class="link-text"> My Jobs </label>
+					</a>
+				</li>
+				<li class="search-job" [ngClass]="{'active' : headerClass == '/searchEmployeeJobs' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/searchEmployeeJobs']">
+					<div class="icon-wrap">
+						<span class=""> </span>
+					</div>
+					<label class="link-text">Search Jobs</label>
+					</a>
+				</li>
+				<li class="my-bid" [ngClass]="{'active' : headerClass == '/myBids' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/myBids']">
+					<div class="icon-wrap">
+						<span class=""> </span>
+					</div>
+					<label class="link-text">My Bids</label>
+					</a>
+				</li>
+				<li class="contact" [ngClass]="{ 'active' : headerClass == '/contactUs' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/contactUs']">
+					<div class="icon-wrap">
+						<span class=""> </span>
+					</div>
+					<label class="link-text">Contact us</label>
+					</a>
+				</li>
+				<li class="about" [ngClass]="{ 'active' : headerClass == '/about' }">
+					<a class="" (click)="toggleMenu()" [routerLink]="['/about']">
+					<div class="icon-wrap">
+						<span class=""> </span>
+					</div>
+					<label class="link-text">About us</label>
+					</a>
+				</li>
+			</ul>
+		</div>
+		</div>
+	</span>
+	<!-- =============== end ================ -->
+	<!--JobShareModal Model -->
+	<div class="modal userMessage fade" id="JobShareModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="m-body">
+					<label>Invite Your Friends</label>
+					<share-buttons [theme]="'default'" [include]="['facebook']" [title]="'Testing'" [description]="'Motipotli https://www.motipotli.com/'"
+					[url]="'https://www.motipotli.com/'"></share-buttons>
+				</div>
+				<div class="text-right">
+					<span *ngIf="dologin == true && loginType == 'employee'">
+					<button class="blueBtn pink-btn" >OK</button>
+					</span>
+					<span *ngIf="dologin == true && loginType == 'employer'">
+					<button class="blueBtn" >OK</button>
+					</span>
+					<button class="greyBtn" id="delete-node" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--JobShareModal Model -->
